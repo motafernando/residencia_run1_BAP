@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "purpose": "WinoBias pipeline smoke; no full reproduction claim",
+  "seed": 2026,
+  "model": {
+    "repo_id": null,
+    "revision": null,
+    "tokenizer_revision": null,
+    "selection_status": "reserved_for_user_review",
+    "allowed_repos": ["meta-llama/Meta-Llama-3-8B-Instruct", "mistralai/Mistral-7B-Instruct-v0.3", "mistralai/Mistral-7B-v0.3"],
+    "dtype": "bfloat16",
+    "device_map": "auto",
+    "max_memory": {"0": "12GiB", "cpu": "20GiB"},
+    "local_files_only": true,
+    "quantization": null
+  },
+  "format": {
+    "intrinsic": "raw_completion",
+    "prompting": "tokenizer_chat_template",
+    "provenance": "local convention; exact template use was not specified in the paper"
+  },
+  "generation": {"do_sample": false, "max_new_tokens": 48, "num_beams": 1},
+  "generation_provenance": "local smoke convention, not recovered publication parameters",
+  "sample": "data/prepared/smoke24.json",
+  "inventory": "data/prepared/inventory.json",
+  "output_root": "results",
+  "image_id_env": "EXPERIMENT_IMAGE_ID"
+}

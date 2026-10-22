@@ -1,0 +1,26 @@
+# Pesos, downloads e dependências locais
+/cache/
+/wheelhouse/
+
+# Ambiente e configurações locais
+/.venv/
+.env
+.env.*
+!.env.example
+*.local.json
+__pycache__/
+*.pyc
+
+# Arquivos transitórios
+*.log
+*.pid
+*.err
+~$*
+.DS_Store
+Thumbs.db
+
+# A rodada documentada fica versionada; novas execuções ficam locais
+/results/*
+!/results/20261021T224558462021Z-inference/
+!/results/20261021T224549103223Z-preflight.json
+!/results/gpu-monitor-full3168.csv

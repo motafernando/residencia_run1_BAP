@@ -1,0 +1,43 @@
+{
+  "repository": "pytorch/pytorch",
+  "tag": "2.7.1-cuda12.8-cudnn9-runtime",
+  "digest": "sha256:c16f4c749e2d9e96878875cdf6cc45cddda1d1a36fddd371dd6f2360f1b6e2a2",
+  "pinned_reference": "pytorch/pytorch@sha256:c16f4c749e2d9e96878875cdf6cc45cddda1d1a36fddd371dd6f2360f1b6e2a2",
+  "registry": "https://registry-1.docker.io",
+  "manifest": {
+    "schemaVersion": 2,
+    "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+    "config": {
+      "mediaType": "application/vnd.docker.container.image.v1+json",
+      "size": 4664,
+      "digest": "sha256:aae95547d2441094f229c6c981cbcd506d1695b7c53dc7d394bbb0e5d4961879"
+    },
+    "layers": [
+      {
+        "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+        "size": 30438509,
+        "digest": "sha256:f557aa5ee22480ee9e1af0a094ce5174a8c3d83e1aa20dc8482e4e387546e0c3"
+      },
+      {
+        "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+        "size": 7206007,
+        "digest": "sha256:c612795a91a4c276cf76861d6d9a3ea818cf206fb43b56395cf24591fd7c4116"
+      },
+      {
+        "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+        "size": 4183988060,
+        "digest": "sha256:66274a3d52052cb32d23f1efefa259d7a335d19d160c07a7d83a6c3515bbb547"
+      },
+      {
+        "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+        "size": 32,
+        "digest": "sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1"
+      },
+      {
+        "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+        "size": 99,
+        "digest": "sha256:5c5eec8ebf45d3d8219517e4cd387bd41281f8a3041b0c39986cfcfa4b4b3f13"
+      }
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+*
+!Dockerfile
+!requirements.txt
+!prepare.py
+!protocol.py
+!run.py
+!wheelhouse/
+!wheelhouse/*.whl
+!wheelhouse-manifest.json

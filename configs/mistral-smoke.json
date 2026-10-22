@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "purpose": "WinoBias pipeline smoke; no full reproduction claim",
+  "seed": 2026,
+  "model": {
+    "repo_id": "mistralai/Mistral-7B-Instruct-v0.3",
+    "revision": "0d4b76e1efeb5eb6f6b5e757c79870472e04bd3a",
+    "tokenizer_revision": "0d4b76e1efeb5eb6f6b5e757c79870472e04bd3a",
+    "selection_status": "model_approved_by_user_historical_candidate_revision_documented",
+    "allowed_repos": [
+      "meta-llama/Meta-Llama-3-8B-Instruct",
+      "mistralai/Mistral-7B-Instruct-v0.3",
+      "mistralai/Mistral-7B-v0.3"
+    ],
+    "dtype": "bfloat16",
+    "device_map": "auto",
+    "max_memory": {
+      "0": "13GiB",
+      "cpu": "10GiB"
+    },
+    "local_files_only": true,
+    "quantization": null
+  },
+  "format": {
+    "intrinsic": "raw_completion",
+    "prompting": "tokenizer_chat_template",
+    "provenance": "local convention; exact template use was not specified in the paper"
+  },
+  "generation": {
+    "do_sample": false,
+    "max_new_tokens": 48,
+    "num_beams": 1
+  },
+  "generation_provenance": "local smoke convention, not recovered publication parameters",
+  "sample": "data/prepared/smoke24.json",
+  "inventory": "data/prepared/inventory.json",
+  "output_root": "results",
+  "image_id_env": "EXPERIMENT_IMAGE_ID",
+  "checkpoint_provenance": "Official pre-arXiv candidate; Transformers shard hashes equal initial May 2024 upload; author-used revision unconfirmed. CPU budget adapted to 15.5GiB Docker VM. GPU budget 13GiB, leaving about 1GiB of currently free VRAM for execution buffers; no quantization."
+}
