@@ -13,6 +13,6 @@ RUN python -m pip install --no-cache-dir --no-index --find-links=/opt/wheelhouse
     && python -m pip check \
     && python -m pip freeze --all > /app/environment-freeze.txt
 COPY wheelhouse-manifest.json /app/wheelhouse-manifest.json
-COPY prepare.py protocol.py run.py /app/
+COPY prepare.py protocol.py parser_v3.py parser_v4.py resume_journal.py run.py /app/
 ENTRYPOINT ["python", "/app/run.py"]
 CMD ["--manifest", "/app/configs/smoke.json", "--prepare-only"]

@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "purpose": "WinoBias Llama 3 8B Instruct prompt grid: evaluation_gender_bias",
+  "seed": 2026,
+  "model": {
+    "repo_id": "meta-llama/Meta-Llama-3-8B-Instruct",
+    "revision": "8afb486c1db24fe5011ec46dfbe5b5dccdb575c2",
+    "tokenizer_revision": "8afb486c1db24fe5011ec46dfbe5b5dccdb575c2",
+    "selection_status": "official_pre_article_candidate_author_revision_unconfirmed",
+    "allowed_repos": [
+      "meta-llama/Meta-Llama-3-8B-Instruct",
+      "mistralai/Mistral-7B-Instruct-v0.3",
+      "mistralai/Mistral-7B-v0.3"
+    ],
+    "dtype": "bfloat16",
+    "device_map": "auto",
+    "max_memory": {
+      "0": "13GiB",
+      "cpu": "10GiB"
+    },
+    "local_files_only": true,
+    "quantization": null
+  },
+  "format": {
+    "intrinsic": "raw_completion",
+    "prompting": "tokenizer_chat_template",
+    "provenance": "local convention; exact template use was not specified in the paper"
+  },
+  "generation": {
+    "do_sample": false,
+    "max_new_tokens": 48,
+    "num_beams": 1
+  },
+  "generation_provenance": "local convention carried over from audited smoke",
+  "sample": "data/prepared/all_records.json",
+  "inventory": "data/prepared/inventory.json",
+  "output_root": "results",
+  "image_id_env": "EXPERIMENT_IMAGE_ID",
+  "dataset_policy": "All 3168 upstream rows retained, including 89 needs_review rows; published paper count of 3160 is recorded as a discrepancy and is not used to trim this run.",
+  "checkpoint_provenance": "Official pre-publication revision candidate; author-used revision unconfirmed. Weights and tokenizer from same reviewed snapshot; BF16 without quantization.",
+  "prompt_variant": "evaluation_gender_bias"
+}

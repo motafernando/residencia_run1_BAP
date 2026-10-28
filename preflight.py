@@ -1,13 +1,16 @@
 """Check CUDA and the pinned tokenizer without loading model weights."""
 from datetime import datetime, timezone
+import hashlib
 import json
+import os
 from pathlib import Path
 import torch
 from transformers import AutoTokenizer
 from prepare import ROOT, write_json
 from protocol import make_inputs
 
-config = json.loads((ROOT / 'configs' / 'smoke.json').read_text())
+config_path = ROOT / 'configs' / 'smoke.json'
+config = json.loads(config_path.read_text())
 sample = json.loads((ROOT / config['sample']).read_text())
 model = config['model']
 snapshot = Path('/cache/huggingface/hub') / ('models--' + model['repo_id'].replace('/', '--')) / 'snapshots' / model['tokenizer_revision']
@@ -19,7 +22,7 @@ tokenizer = AutoTokenizer.from_pretrained(snapshot, local_files_only=True, trust
 rows = []
 records = sample['records'] if isinstance(sample, dict) else sample
 for record in records:
-    prompts = make_inputs(record, config['seed'])
+    prompts = make_inputs(record, config['seed'], config.get('prompt_variant', 'original'))
     prefix = prompts['intrinsic']
     prefix_ids = tokenizer(prefix, add_special_tokens=True)['input_ids']
     boundaries = []
@@ -35,6 +38,9 @@ for record in records:
         lengths[condition] = len(tokenizer(rendered, add_special_tokens=False)['input_ids'])
     rows.append({'id': record['id'], 'boundaries': boundaries, 'prompt_token_lengths': lengths})
 result = {'status': 'cuda_and_tokenizer_checked_no_model_inference',
+          'prompt_variant': config.get('prompt_variant', 'original'), 'seed': config['seed'],
+          'manifest_sha256': hashlib.sha256(config_path.read_bytes()).hexdigest(),
+          'image_id': os.environ.get('EXPERIMENT_IMAGE_ID'),
           'repo_id': model['repo_id'], 'tokenizer_revision': model['tokenizer_revision'],
           'torch_version': torch.__version__, 'cuda_version': torch.version.cuda,
           'gpu': torch.cuda.get_device_name(), 'architecture': list(torch.cuda.get_device_capability()),

@@ -1,46 +1,41 @@
-# Rodada 1 do WinoBias com Mistral 7B Instruct v0.3
+# Reprodução e Extensão do WinoBias (Mistral 7B e Llama 3 8B)
 
-Este diretório reúne o código, os dados e as saídas da primeira rodada local do núcleo WinoBias de *Bias after Prompting* (Sivakumar et al., 2025). Foram avaliadas 3.168 frases nas condições intrínseca, zero-shot e 3-shot, totalizando 9.504 registros com uma semente. Os resultados são preliminares: o artigo relata cinco sementes nas condições com prompting, e algumas regras necessárias à implementação não estão especificadas integralmente na publicação.
+Este diretório reúne o código, os manifestos de configuração, os dados preparados e as saídas brutas das rodadas locais do benchmark WinoBias baseadas em *Bias after Prompting* (Sivakumar et al., 2025) e estendidas com o grid de prompts inspirado em Gao e Kreiss (2025). Em cada rodada são avaliadas 3.168 frases nas condições intrínseca, zero-shot e 3-shot, totalizando 9.504 registros por rodada com a semente 2026.
 
 ## Organização
 
-- `prepare.py`, `protocol.py` e `run.py`: preparação dos dados, prompts experimentais, pontuação e inferência.
-- `recompute_saved_run.py` e `audit_unknown_parsing.py`: auditoria e recálculo offline das métricas, sem nova inferência.
-- `configs/mistral-full-3168.json`: configuração efetivamente usada na rodada; os demais manifestos registram o piloto e o perfil genérico.
-- `data/raw/corefBias/`: arquivos do WinoBias obtidos do commit `0bce984dd081bbc10b0622f326727a024c607895`, com a licença original.
-- `data/prepared/`: inventário e registros normalizados. O inventário aponta 89 frases que requerem revisão por múltiplos pronomes ou terceira ocupação.
-- `results/20261021T224558462021Z-inference/`: respostas, prompts enviados, manifesto, métricas e versões anteriores preservadas.
-- `results/gpu-monitor-full3168.csv`: amostragem de utilização e memória da GPU durante a rodada.
-- `docs/`: [registro sintético da execução](docs/Execucao%20da%20primeira%20rodada%20WinoBias.docx) e [lacunas e decisões metodológicas](docs/Lacunas%20e%20decisoes%20metodologicas%20da%20primeira%20rodada%20WinoBias.docx), em formato Word.
+- `prepare.py`, `protocol.py`, `parser_v3.py`, `parser_v4.py`, `parser_v5.py` e `run.py`: preparação dos dados, definição das variantes de prompt (`original`, `refined`, `evaluation_task` e `evaluation_gender_bias`), leitura das respostas, pontuação e execução da inferência.
+- `recompute_saved_run.py`, `consolidar_resultados_v4.py`, `auditar_comparacao_mistral.py`, `auditar_parser_v5.py`, `audit_unknown_parsing.py` e `audit_parser_v3.py`: scripts de verificação e recálculo offline de métricas sobre as respostas salvas, sem nova inferência.
+- `configs/mistral-full-3168.json` e `configs/mistral-grid-*.json`: manifestos das quatro variantes executadas com o modelo `mistralai/Mistral-7B-Instruct-v0.3`.
+- `configs/llama-grid-*.json`: manifestos das variantes configuradas para o modelo `meta-llama/Meta-Llama-3-8B-Instruct`.
+- `docs/grid-prompts-winobias.md`: especificação estrutural das quatro variantes do grid de prompts (`P0` a `P3`).
+- `data/raw/corefBias/`: arquivos originais do WinoBias obtidos do commit `0bce984dd081bbc10b0622f326727a024c607895`, com a licença original.
+- `data/prepared/`: inventário (`inventory.json`), lote piloto (`smoke24.json`) e conjunto completo normalizado (`all_records.json`, 3.168 frases).
+- `results/`: diretórios das seis rodadas completas executadas (quatro com Mistral 7B e duas com Llama 3 8B), contendo `config.json`, `prompts.json`, `responses.jsonl`, `metrics.json`, `run.json`, `sample.json` e cópias exatas dos scripts utilizados (`*.used.py`).
 
-O checkpoint candidato foi fixado no repositório oficial `mistralai/Mistral-7B-Instruct-v0.3`, revisão `0d4b76e1efeb5eb6f6b5e757c79870472e04bd3a`, em BF16 e sem quantização. Não há confirmação de que esse SHA seja o usado pelas autoras. O modelo não está incluído neste diretório: seus arquivos são obtidos do Hugging Face pelo script `download-model.py` e ficam no volume local `cache/`.
+Os modelos não estão incluídos neste repositório: os checkpoints oficiais (`mistralai/Mistral-7B-Instruct-v0.3`, revisão `0d4b76e1efeb5eb6f6b5e757c79870472e04bd3a`, e `meta-llama/Meta-Llama-3-8B-Instruct`, revisão `8cde5ca8380496c9a6cc7ef3a8b46a0372a1d920`) são baixados via `download-model.py` para o diretório local `cache/` (ignorado pelo Git).
 
-## O que vem do artigo e o que foi decidido nesta rodada
+## Protocolo e escolhas de implementação
 
-O artigo orienta a comparação entre avaliação intrínseca, zero-shot e 3-shot no WinoBias, define RPA para as frases Type 2 e apresenta O-SB e A-SB como medidas de viés. A seção 3.2 especifica a comparação intrínseca pela probabilidade logarítmica total das candidatas. As Figuras 2 e 5 e o Apêndice A apresentam a estrutura dos prompts, os três exemplos de contexto e a ordenação aleatória das alternativas. Seus exemplos incluem `Unknown` para casos ambíguos Type 1. O estudo relata cinco sementes nas condições com prompting. Esses pontos orientam a rodada, mas não determinam sozinhos todos os passos necessários para produzir os números.
+O artigo de referência orienta a comparação entre avaliação intrínseca, zero-shot e 3-shot no WinoBias, define RPA para as frases Type 2 e apresenta O-SB e A-SB como medidas de viés. A seção 3.2 especifica a comparação intrínseca pela probabilidade logarítmica total das candidatas. As Figuras 2 e 5 e o Apêndice A apresentam a estrutura dos prompts, os três exemplos de contexto e a ordenação aleatória das alternativas.
 
-As escolhas abaixo são **operacionalizações nossas**. Estão registradas para permitir auditoria e podem produzir resultados diferentes dos publicados. Não dispomos de uma implementação dos autores que confirme sua equivalência.
+As escolhas abaixo estão registradas no código para permitir reprodução e verificação:
 
-- **Dados:** usamos os oito arquivos `dev` e `test` do commit do corefBias indicado acima. Eles somam 3.168 frases, não as 3.160 informadas no artigo. Mantivemos todas, inclusive as 89 sinalizadas para revisão. Para transformar as anotações em entradas do experimento, `prepare.py` escolhe o primeiro pronome marcado e as duas primeiras ocupações distintas; conserva as demais menções para auditoria. O artigo não esclarece quais oito frases foram excluídas nem como tratar todos esses casos.
-- **Checkpoint:** a revisão oficial fixada é uma candidata histórica, escolhida para esta execução. A identidade dos pesos, do tokenizer e da revisão usada pelas autoras não está confirmada pelo artigo. BF16 sem quantização e os limites de memória com offload foram escolhas para a máquina local, registradas em `configs/mistral-full-3168.json`.
-- **Prompts e formato:** `protocol.py` constrói a pergunta, as alternativas e o prefixo intrínseco a partir de cada frase, seguindo a estrutura mostrada nas Figuras 2 e 5. Os três exemplos de contexto e a ordenação aleatória das alternativas vêm do artigo. Nossa escolha foi fixar a ordenação por frase com a semente 2026. Na geração zero-shot e 3-shot, `run.py` aplica o chat template do tokenizer. Não confirmamos que o artigo tenha usado essa mesma renderização ou tokenização.
-- **Pontuação intrínseca e geração:** a comparação pela probabilidade logarítmica total das candidatas é descrita na seção 3.2; `run.py` a implementa somando as log-probabilidades dos tokens, sem dividir pelo comprimento. A tokenização conjunta do prefixo e da candidata é um detalhe da nossa implementação. Para as respostas geradas, usamos decodificação greedy, limite de 48 tokens e uma semente. O limite e a configuração completa de geração não foram recuperados do artigo.
-- **Leitura das respostas:** o parser atual em `protocol.py` usa, para O-SB/A-SB, a ocupação nomeada na primeira linha não vazia. `Unknown` explícito ou uma linha sem ocupação única não seleciona ocupação. Uma resposta formada apenas por `A`, `B` ou `C` tem a letra registrada, mas a letra não vira automaticamente seleção para essas métricas. Para o RPA Type 2, exigimos que apenas uma ocupação candidata apareça no texto completo e corresponda ao referente correto. O artigo fornece o critério geral de RPA, mas não o algoritmo de extração para respostas com explicações; essa separação entre escolha e menções é nossa.
-- **Cálculo das métricas:** em `protocol.py`, a taxa de seleção de cada ocupação usa como denominador as frases do gênero considerado em que ela aparece como candidata. O A-SB usa as 40 ocupações. Respostas sem ocupação selecionada permanecem nesses denominadores; falhas de execução são contadas à parte. `recompute_saved_run.py` calcula a correlação de Pearson por ocupação. Essas regras de contagem são declarações da implementação, não uma confirmação de todos os detalhes do cálculo das autoras.
+- **Dados:** utilizamos os oito arquivos `dev` e `test` do commit do `corefBias` indicado acima, totalizando 3.168 frases. `prepare.py` extrai o primeiro pronome marcado e as duas primeiras ocupações distintas, preservando as anotações completas em `data/prepared/`.
+- **Prompts e variantes (`protocol.py` e `docs/grid-prompts-winobias.md`):** além da configuração `original` (`P0`), o parâmetro `prompt_variant` seleciona as variantes `refined` (`P1`), `evaluation_task` (`P2`) e `evaluation_gender_bias` (`P3`). A ordenação das alternativas é fixada por frase com a semente `2026`. Na geração zero-shot e 3-shot, `run.py` aplica o chat template do respectivo tokenizer.
+- **Pontuação intrínseca e geração (`run.py`):** a condição intrínseca soma as log-probabilidades dos tokens de cada candidata sem normalização por comprimento. Para as respostas geradas, utiliza-se decodificação *greedy* (`do_sample=False`), limite de `48` novos tokens e semente `2026`.
+- **Leitura das respostas (`parser_v3.py`, `parser_v4.py` e `parser_v5.py`):** preserva-se a separação entre o critério estrito de RPA no texto completo e a leitura pela alternativa escolhida. Os scripts de recálculo offline permitem auditar as saídas sem modificar os arquivos `responses.jsonl` brutos de cada execução.
 
-O parser foi revisado **depois** da inferência. O recálculo em `recompute_saved_run.py` alterou apenas as leituras derivadas e as métricas: `responses.jsonl` continua com as saídas originais; `metrics.generated-original.json` e `metrics.pre-answer-parser-v2.json` preservam os agregados anteriores. Por isso, a versão de cada métrica precisa acompanhar qualquer comparação com o artigo.
+## Rodadas completas versionadas em `results/`
 
-Ainda faltam a revisão manual das 89 frases e de respostas selecionadas, a explicação da diferença entre 3.168 e 3.160, a confirmação dos detalhes do checkpoint e do prompting e as sementes adicionais. As correlações desta pasta são descritivas; não reproduzem os testes de significância publicados. **Esta rodada é uma aproximação documentada do experimento principal, não uma reprodução exata.**
+1. **Mistral 7B — P0 (`original`):** `results/20261021T224558462021Z-inference/`
+2. **Mistral 7B — P1 (`refined`):** `results/grid-20261026t211027z/full/refined/20261026T212312065659Z-inference/`
+3. **Mistral 7B — P2 (`evaluation_task`):** `results/grid-20261026t211027z/full/evaluation_task/20261027T001137163705Z-inference/`
+4. **Mistral 7B — P3 (`evaluation_gender_bias`):** `results/grid-20261026t211027z/full/evaluation_gender_bias/20261027T030929544031Z-inference/`
+5. **Llama 3 8B — P0 (`original`):** `results/llama-fullgpu-round-20261027/full/20261027T125049826965Z-inference/`
+6. **Llama 3 8B — P1 (`refined`):** `results/llama-refined-fullgpu-20261027/full/20261027T190835747818Z-inference/`
 
-## Ler os resultados
-
-O arquivo `responses.jsonl` contém as saídas brutas e não foi alterado pelo recálculo. `responses.parsed-v2.jsonl` contém a interpretação derivada. `metrics.generated-original.json` e `metrics.pre-answer-parser-v2.json` preservam etapas anteriores; `metrics.json` contém os agregados usados no registro sintético. `run.json` guarda o ambiente, os hashes e as contagens da inferência. `protocol.used.py` e `run.used.py` são as cópias exatas dos arquivos carregados na execução, conferidas contra os hashes do manifesto. `protocol.py` e `run.py`, na raiz, são versões posteriores à revisão do parser.
-
-O texto histórico `interpretacao-rodada1-v2.md` recebeu neste pacote apenas uma correção de arredondamento: a mudança de A-SB Type 2 no 3-shot é de 8,3684% para 8,3651%, isto é, 8,37% nas duas versões com duas casas decimais. Os arquivos de métricas e respostas foram copiados sem alteração.
-
-## Preparar uma nova execução
-
-O ambiente usa uma imagem OCI baseada em PyTorch/CUDA, fixada em `image-lock.json`, mais as versões de `requirements.txt`. O `Dockerfile` instala wheels locais. Antes do build, execute `download-wheels.py` para obtê-los e conferir os hashes registrados em `wheelhouse-manifest.json`. `cache/` e `wheelhouse/` ficam fora do Git.
+## Executar ou reproduzir
 
 Em PowerShell, na raiz deste diretório:
 
@@ -52,6 +47,6 @@ python download-model.py --manifest configs/mistral-full-3168.json
 .\run-docker.ps1 -Manifest configs/mistral-full-3168.json -Inference
 ```
 
-O download do checkpoint requer acesso ao repositório oficial. O script não grava `HF_TOKEN` nos manifestos. Os comandos de inferência criam um novo diretório em `results/`; não reescrevem a rodada preservada. Para recalcular o parser da rodada arquivada, use `recompute_saved_run.py` sobre uma cópia dos resultados, pois o script grava novos arquivos derivados no diretório informado.
+Para executar uma variante específica do grid ou outro modelo, substitua o manifesto em `-Manifest` (por exemplo, `configs/mistral-grid-refined.json` ou `configs/llama-grid-original.json`).
 
-Fonte do estudo: [Sivakumar et al. (2025)](https://aclanthology.org/2025.findings-emnlp.1008/). Fonte dos dados: [corefBias](https://github.com/uclanlp/corefBias/tree/0bce984dd081bbc10b0622f326727a024c607895/WinoBias/wino).
+Fonte do estudo base: [Sivakumar et al. (2025)](https://aclanthology.org/2025.findings-emnlp.1008/). Fonte do enquadramento de avaliação: [Gao e Kreiss (2025)](https://aclanthology.org/2025.emnlp-main.342/). Fonte dos dados: [corefBias](https://github.com/uclanlp/corefBias/tree/0bce984dd081bbc10b0622f326727a024c607895/WinoBias/wino).

@@ -10,11 +10,26 @@ from pathlib import Path
 import platform
 import random
 import re
+import shutil
 import time
 import traceback
 
 from prepare import ROOT, digest, write_json
-from protocol import make_inputs, parse_response, metrics
+from protocol import make_inputs, metrics
+from parser_v4 import parse_response
+from resume_journal import append_row, recover_journal, validate_resume
+
+
+def write_json(path, value):
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(path.name + '.tmp')
+    with temporary.open('w', encoding='utf-8') as handle:
+        json.dump(value, handle, ensure_ascii=False, indent=2)
+        handle.write('\n')
+        handle.flush()
+        os.fsync(handle.fileno())
+    os.replace(temporary, path)
 
 
 def load(path):
@@ -82,33 +97,68 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--manifest', default=str(ROOT / 'configs' / 'smoke.json'))
     parser.add_argument('--prepare-only', action='store_true')
+    parser.add_argument('--resume-from', help='Existing inference folder under this manifest output_root')
     args = parser.parse_args()
     config = load(args.manifest)
     source = load(ROOT / config['sample'])
     inventory = load(ROOT / config['inventory'])
     records = source['records'] if isinstance(source, dict) else source
-    inputs = [make_inputs(row, config['seed']) for row in records]
+    prompt_variant = config.get('prompt_variant', 'original')
+    inputs = [make_inputs(row, config['seed'], prompt_variant) for row in records]
     stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')
-    out = ROOT / config['output_root'] / (stamp + ('-prepared' if args.prepare_only else '-inference'))
-    out.mkdir(parents=True, exist_ok=False)
-    write_json(out / 'config.json', config)
-    write_json(out / 'sample.json', source)
-    write_json(out / 'prompts.json', inputs)
-    state = {'status': 'prepared_no_inference', 'created_utc': stamp,
+    output_root = (ROOT / config['output_root']).resolve()
+    source_files = ['prepare.py', 'protocol.py', 'parser_v3.py', 'parser_v4.py', 'resume_journal.py', 'run.py']
+    current_code = {name: file_hash(ROOT / name) for name in source_files}
+    current_inputs = {name: file_hash(ROOT / config[name]) for name in ['sample', 'inventory']}
+    if args.resume_from:
+        if args.prepare_only:
+            raise ValueError('Cannot resume a prepare-only run')
+        out = Path(args.resume_from).resolve()
+        if out.parent != output_root or not out.name.endswith('-inference'):
+            raise ValueError('Resume folder is outside this manifest output_root')
+        state = load(out / 'run.json')
+        validate_resume(load(out / 'config.json'), config, state, current_code, current_inputs,
+                        os.environ.get(config['image_id_env']))
+        state.setdefault('resume_attempts', []).append({'started_utc': stamp, 'previous_status': state['status']})
+    else:
+        out = output_root / (stamp + ('-prepared' if args.prepare_only else '-inference'))
+        out.mkdir(parents=True, exist_ok=False)
+        for name in source_files:
+            shutil.copyfile(ROOT / name, out / name.replace('.py', '.used.py'))
+        write_json(out / 'config.json', config)
+        write_json(out / 'sample.json', source)
+        write_json(out / 'prompts.json', inputs)
+        state = {'status': 'prepared_no_inference', 'created_utc': stamp,
              'sample_size': len(records), 'conditions': ['intrinsic', 'zero_shot', 'three_shot'],
              'dataset_revision': inventory['revision'], 'input_hashes': {},
-             'code_hashes': {name: file_hash(ROOT / name) for name in ['prepare.py', 'protocol.py', 'run.py']},
+             'code_hashes': current_code,
+             'parser_version': 'v4_label_boundary', 'prompt_variant': prompt_variant,
              'environment': {'python': platform.python_version(), 'platform': platform.platform(),
                              'image_id': os.environ.get(config['image_id_env'])},
              'model_selection': config['model']['selection_status']}
-    for name in ['sample', 'inventory']:
-        state['input_hashes'][name] = file_hash(ROOT / config[name])
-    write_json(out / 'run.json', state)
+        state['input_hashes'] = current_inputs
     if args.prepare_only:
+        write_json(out / 'run.json', state)
         print(json.dumps({'status': state['status'], 'output': str(out), 'prompts': len(inputs) * 3}))
         return
+    import fcntl
+    lock = (out / '.inference.lock').open('a+')
+    try:
+        fcntl.flock(lock.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except BlockingIOError as exc:
+        lock.close()
+        raise RuntimeError('Another inference process owns this run') from exc
+    write_json(out / 'run.json', state)
     started = time.perf_counter()
     try:
+        expected = {(record['id'], condition) for record in records for condition in state['conditions']}
+        if len(expected) != len(records) * len(state['conditions']):
+            raise ValueError('Duplicate sample IDs prevent reliable resumption')
+        journal = out / 'responses.jsonl'
+        completed = recover_journal(journal, expected)
+        previous_checkpoint = state.get('checkpoint_files')
+        previous_tokenizer = state.get('tokenizer_files')
+        previous_device_map = state.get('model_device_map')
         m = config['model']
         if m['repo_id'] not in m['allowed_repos']:
             raise ValueError('Choose one of the official study checkpoint candidates before inference')
@@ -151,6 +201,10 @@ def main():
         state['tokenizer_files'] = [{'file': p.name, 'sha256': file_hash(p)}
                                     for p in sorted(Path(token_snapshot).iterdir()) if p.is_file()
                                     and ('token' in p.name or p.suffix in {'.model', '.jinja'})]
+        if previous_checkpoint and previous_checkpoint != state['checkpoint_files']:
+            raise ValueError('Resume rejected: checkpoint files changed')
+        if previous_tokenizer and previous_tokenizer != state['tokenizer_files']:
+            raise ValueError('Resume rejected: tokenizer files changed')
         memory = {int(k) if k.isdigit() else k: v for k, v in m['max_memory'].items()}
         offload = out / 'offload'
         model = AutoModelForCausalLM.from_pretrained(snapshot, torch_dtype=getattr(torch, m['dtype']),
@@ -160,13 +214,16 @@ def main():
                                                     use_safetensors=True, attn_implementation='eager')
         model.eval()
         state['model_device_map'] = {str(k): str(v) for k, v in model.hf_device_map.items()}
+        if previous_device_map and previous_device_map != state['model_device_map']:
+            raise ValueError('Resume rejected: model device map changed')
         state['load_seconds'] = time.perf_counter() - started
         state['status'] = 'running'
         write_json(out / 'run.json', state)
-        rows = []
-        with (out / 'responses.jsonl').open('x', encoding='utf-8', buffering=1) as sink:
-            for record, prompt in zip(records, inputs):
+        for record, prompt in zip(records, inputs):
                 for condition in state['conditions']:
+                    key = (record['id'], condition)
+                    if key in completed and completed[key]['status'] == 'ok':
+                        continue
                     row = {**record, 'condition': condition, 'option_map': prompt['option_map']}
                     tick = time.perf_counter()
                     try:
@@ -186,13 +243,15 @@ def main():
                             row['prediction'] = row['parsing']['selection_prediction']
                             row['selection_prediction'] = row['parsing']['selection_prediction']
                             row['rpa_prediction'] = row['parsing']['rpa_prediction']
+                            row['rpa_choice_prediction'] = row['parsing']['rpa_choice_prediction']
                         row['status'] = 'ok'
                     except Exception as error:
                         row.update(status='error', prediction=None, error_type=type(error).__name__, error=str(error))
                     row['seconds'] = time.perf_counter() - tick
-                    rows.append(row)
-                    sink.write(json.dumps(row, ensure_ascii=False) + '\n')
-                    print(f"{len(rows)}/{len(records)*3} {record['id']} {condition} {row['status']}", flush=True)
+                    append_row(journal, row)
+                    completed[key] = row
+                    print(f"{len(completed)}/{len(records)*3} {record['id']} {condition} {row['status']}", flush=True)
+        rows = [completed[(record['id'], condition)] for record in records for condition in state['conditions']]
         write_json(out / 'metrics.json', metrics(rows, inventory['occupations']))
         errors = sum(r['status'] != 'ok' for r in rows)
         import psutil
@@ -211,6 +270,8 @@ def main():
         write_json(out / 'run.json', state)
         (out / 'error.txt').write_text(traceback.format_exc(), encoding='utf-8')
         raise
+    finally:
+        lock.close()
     print(json.dumps({'status': state['status'], 'output': str(out)}))
 
 

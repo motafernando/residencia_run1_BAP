@@ -15,12 +15,50 @@ __pycache__/
 *.log
 *.pid
 *.err
+*.lock
 ~$*
 .DS_Store
 Thumbs.db
 
-# A rodada documentada fica versionada; novas execuções ficam locais
+# Análises e relatórios internos (mantidos apenas localmente)
+/analises/
+/gerar_relatorio_mistral.py
+/gerar_relatorio_mistral_v2.py
+/gerar_auditoria_parser_v2.py
+/recover-llama-queue.ps1
+
+# Documentos: versionar apenas especificações estruturais necessárias à reprodução
+/docs/*
+!/docs/grid-prompts-winobias.md
+
+# Rodadas completas documentadas ficam versionadas; demais execuções transitórias ficam locais
 /results/*
 !/results/20261021T224558462021Z-inference/
 !/results/20261021T224549103223Z-preflight.json
 !/results/gpu-monitor-full3168.csv
+
+!/results/grid-20261026t211027z/
+/results/grid-20261026t211027z/*
+!/results/grid-20261026t211027z/full/
+/results/grid-20261026t211027z/full/*
+!/results/grid-20261026t211027z/full/refined/
+/results/grid-20261026t211027z/full/refined/*
+!/results/grid-20261026t211027z/full/refined/20261026T212312065659Z-inference/
+!/results/grid-20261026t211027z/full/evaluation_task/
+/results/grid-20261026t211027z/full/evaluation_task/*
+!/results/grid-20261026t211027z/full/evaluation_task/20261027T001137163705Z-inference/
+!/results/grid-20261026t211027z/full/evaluation_gender_bias/
+/results/grid-20261026t211027z/full/evaluation_gender_bias/*
+!/results/grid-20261026t211027z/full/evaluation_gender_bias/20261027T030929544031Z-inference/
+
+!/results/llama-fullgpu-round-20261027/
+/results/llama-fullgpu-round-20261027/*
+!/results/llama-fullgpu-round-20261027/full/
+/results/llama-fullgpu-round-20261027/full/*
+!/results/llama-fullgpu-round-20261027/full/20261027T125049826965Z-inference/
+
+!/results/llama-refined-fullgpu-20261027/
+/results/llama-refined-fullgpu-20261027/*
+!/results/llama-refined-fullgpu-20261027/full/
+/results/llama-refined-fullgpu-20261027/full/*
+!/results/llama-refined-fullgpu-20261027/full/20261027T190835747818Z-inference/

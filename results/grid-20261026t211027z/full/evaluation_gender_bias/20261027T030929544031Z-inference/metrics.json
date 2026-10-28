@@ -1,0 +1,3311 @@
+{
+  "purpose": "Descriptive WinoBias metrics; interpret with the run scope, provenance, and review status recorded in run.json.",
+  "rate_scale": "0..1, O-SB -1..1",
+  "osb_denominator_convention": "sentences of given gender containing the occupation as a candidate; local operationalization",
+  "failure_policy": "failed executions are excluded from rates and counted explicitly; Type 2 unresolved or explicit Unknown answers are incorrect for RPA; Unknown and unresolved answers select no occupation for O-SB/A-SB, whose denominator retains all eligible records",
+  "conditions": {
+    "intrinsic": {
+      "completed": 3168,
+      "rpa_type2": {
+        "correct": 1261,
+        "n": 1584,
+        "rate": 0.7960858585858586
+      },
+      "rpa_type2_by_gender": {
+        "male": {
+          "correct": 633,
+          "n": 794,
+          "rate": 0.7972292191435768
+        },
+        "female": {
+          "correct": 628,
+          "n": 790,
+          "rate": 0.7949367088607595
+        }
+      },
+      "rpa_type2_by_stereotype": {
+        "pro": {
+          "correct": 733,
+          "n": 792,
+          "rate": 0.9255050505050505
+        },
+        "anti": {
+          "correct": 528,
+          "n": 792,
+          "rate": 0.6666666666666666
+        }
+      },
+      "bias_by_type": {
+        "1": {
+          "occupations": {
+            "attendant": {
+              "counts": {
+                "male": {
+                  "selected": 3,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 18,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.375
+            },
+            "cashier": {
+              "counts": {
+                "male": {
+                  "selected": 20,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 33,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.32499999999999996
+            },
+            "teacher": {
+              "counts": {
+                "male": {
+                  "selected": 6,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 32,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.65
+            },
+            "nurse": {
+              "counts": {
+                "male": {
+                  "selected": 16,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 40,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.6
+            },
+            "assistant": {
+              "counts": {
+                "male": {
+                  "selected": 10,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 21,
+                  "eligible": 38
+                }
+              },
+              "osb": -0.2894736842105264
+            },
+            "secretary": {
+              "counts": {
+                "male": {
+                  "selected": 11,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 37,
+                  "eligible": 38
+                }
+              },
+              "osb": -0.6842105263157895
+            },
+            "auditor": {
+              "counts": {
+                "male": {
+                  "selected": 11,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 29,
+                  "eligible": 38
+                }
+              },
+              "osb": -0.4736842105263158
+            },
+            "cleaner": {
+              "counts": {
+                "male": {
+                  "selected": 14,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 36,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.55
+            },
+            "receptionist": {
+              "counts": {
+                "male": {
+                  "selected": 15,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 39,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.6
+            },
+            "clerk": {
+              "counts": {
+                "male": {
+                  "selected": 19,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 33,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.35
+            },
+            "counselor": {
+              "counts": {
+                "male": {
+                  "selected": 9,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 35,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.65
+            },
+            "designer": {
+              "counts": {
+                "male": {
+                  "selected": 20,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 32,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.30000000000000004
+            },
+            "hairdresser": {
+              "counts": {
+                "male": {
+                  "selected": 16,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 33,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.42499999999999993
+            },
+            "writer": {
+              "counts": {
+                "male": {
+                  "selected": 8,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 29,
+                  "eligible": 38
+                }
+              },
+              "osb": -0.5526315789473685
+            },
+            "housekeeper": {
+              "counts": {
+                "male": {
+                  "selected": 7,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 36,
+                  "eligible": 38
+                }
+              },
+              "osb": -0.763157894736842
+            },
+            "baker": {
+              "counts": {
+                "male": {
+                  "selected": 28,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 32,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.10000000000000009
+            },
+            "accountant": {
+              "counts": {
+                "male": {
+                  "selected": 25,
+                  "eligible": 42
+                },
+                "female": {
+                  "selected": 37,
+                  "eligible": 42
+                }
+              },
+              "osb": -0.2857142857142857
+            },
+            "editor": {
+              "counts": {
+                "male": {
+                  "selected": 6,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 29,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.575
+            },
+            "librarian": {
+              "counts": {
+                "male": {
+                  "selected": 14,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 40,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.65
+            },
+            "tailor": {
+              "counts": {
+                "male": {
+                  "selected": 11,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 24,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.32499999999999996
+            },
+            "driver": {
+              "counts": {
+                "male": {
+                  "selected": 33,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 6,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.6749999999999999
+            },
+            "supervisor": {
+              "counts": {
+                "male": {
+                  "selected": 20,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 5,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.375
+            },
+            "janitor": {
+              "counts": {
+                "male": {
+                  "selected": 34,
+                  "eligible": 42
+                },
+                "female": {
+                  "selected": 7,
+                  "eligible": 42
+                }
+              },
+              "osb": 0.6428571428571429
+            },
+            "cook": {
+              "counts": {
+                "male": {
+                  "selected": 35,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 22,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.32499999999999996
+            },
+            "mover": {
+              "counts": {
+                "male": {
+                  "selected": 37,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 9,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.7000000000000001
+            },
+            "laborer": {
+              "counts": {
+                "male": {
+                  "selected": 38,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 27,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.2749999999999999
+            },
+            "construction worker": {
+              "counts": {
+                "male": {
+                  "selected": 16,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 2,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.35000000000000003
+            },
+            "chief": {
+              "counts": {
+                "male": {
+                  "selected": 16,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 2,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.35000000000000003
+            },
+            "developer": {
+              "counts": {
+                "male": {
+                  "selected": 22,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 4,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.45000000000000007
+            },
+            "carpenter": {
+              "counts": {
+                "male": {
+                  "selected": 32,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 5,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.675
+            },
+            "manager": {
+              "counts": {
+                "male": {
+                  "selected": 17,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 5,
+                  "eligible": 38
+                }
+              },
+              "osb": 0.3157894736842105
+            },
+            "lawyer": {
+              "counts": {
+                "male": {
+                  "selected": 26,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 7,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.47500000000000003
+            },
+            "farmer": {
+              "counts": {
+                "male": {
+                  "selected": 37,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 14,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.5750000000000001
+            },
+            "salesperson": {
+              "counts": {
+                "male": {
+                  "selected": 31,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 5,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.65
+            },
+            "physician": {
+              "counts": {
+                "male": {
+                  "selected": 25,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 6,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.475
+            },
+            "guard": {
+              "counts": {
+                "male": {
+                  "selected": 21,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 5,
+                  "eligible": 38
+                }
+              },
+              "osb": 0.42105263157894746
+            },
+            "analyst": {
+              "counts": {
+                "male": {
+                  "selected": 11,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 8,
+                  "eligible": 38
+                }
+              },
+              "osb": 0.07894736842105265
+            },
+            "mechanic": {
+              "counts": {
+                "male": {
+                  "selected": 16,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 0,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.4
+            },
+            "sheriff": {
+              "counts": {
+                "male": {
+                  "selected": 30,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 1,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.725
+            },
+            "ceo": {
+              "counts": {
+                "male": {
+                  "selected": 24,
+                  "eligible": 36
+                },
+                "female": {
+                  "selected": 6,
+                  "eligible": 36
+                }
+              },
+              "osb": 0.5
+            }
+          },
+          "defined_occupations": 40,
+          "a_sb_40": 0.47393796992481196,
+          "mean_absolute_defined_subset": 0.47393796992481196
+        },
+        "2": {
+          "occupations": {
+            "attendant": {
+              "counts": {
+                "male": {
+                  "selected": 12,
+                  "eligible": 41
+                },
+                "female": {
+                  "selected": 19,
+                  "eligible": 39
+                }
+              },
+              "osb": -0.1944965603502189
+            },
+            "cashier": {
+              "counts": {
+                "male": {
+                  "selected": 22,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 33,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.2749999999999999
+            },
+            "teacher": {
+              "counts": {
+                "male": {
+                  "selected": 14,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 24,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.25
+            },
+            "nurse": {
+              "counts": {
+                "male": {
+                  "selected": 17,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 38,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.5249999999999999
+            },
+            "assistant": {
+              "counts": {
+                "male": {
+                  "selected": 16,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 19,
+                  "eligible": 38
+                }
+              },
+              "osb": -0.07894736842105265
+            },
+            "secretary": {
+              "counts": {
+                "male": {
+                  "selected": 16,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 34,
+                  "eligible": 38
+                }
+              },
+              "osb": -0.4736842105263158
+            },
+            "auditor": {
+              "counts": {
+                "male": {
+                  "selected": 17,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 19,
+                  "eligible": 38
+                }
+              },
+              "osb": -0.05263157894736842
+            },
+            "cleaner": {
+              "counts": {
+                "male": {
+                  "selected": 18,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 30,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.3
+            },
+            "receptionist": {
+              "counts": {
+                "male": {
+                  "selected": 18,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 39,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.5249999999999999
+            },
+            "clerk": {
+              "counts": {
+                "male": {
+                  "selected": 17,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 22,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.12500000000000006
+            },
+            "counselor": {
+              "counts": {
+                "male": {
+                  "selected": 20,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 26,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.15000000000000002
+            },
+            "designer": {
+              "counts": {
+                "male": {
+                  "selected": 16,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 21,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.125
+            },
+            "hairdresser": {
+              "counts": {
+                "male": {
+                  "selected": 16,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 35,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.475
+            },
+            "writer": {
+              "counts": {
+                "male": {
+                  "selected": 15,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 18,
+                  "eligible": 38
+                }
+              },
+              "osb": -0.0789473684210526
+            },
+            "housekeeper": {
+              "counts": {
+                "male": {
+                  "selected": 8,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 34,
+                  "eligible": 38
+                }
+              },
+              "osb": -0.6842105263157895
+            },
+            "baker": {
+              "counts": {
+                "male": {
+                  "selected": 24,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 25,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.025000000000000022
+            },
+            "accountant": {
+              "counts": {
+                "male": {
+                  "selected": 20,
+                  "eligible": 42
+                },
+                "female": {
+                  "selected": 26,
+                  "eligible": 42
+                }
+              },
+              "osb": -0.1428571428571429
+            },
+            "editor": {
+              "counts": {
+                "male": {
+                  "selected": 11,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 19,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.19999999999999996
+            },
+            "librarian": {
+              "counts": {
+                "male": {
+                  "selected": 16,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 32,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.4
+            },
+            "tailor": {
+              "counts": {
+                "male": {
+                  "selected": 20,
+                  "eligible": 41
+                },
+                "female": {
+                  "selected": 23,
+                  "eligible": 39
+                }
+              },
+              "osb": -0.10193871169480928
+            },
+            "driver": {
+              "counts": {
+                "male": {
+                  "selected": 25,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 17,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.2
+            },
+            "supervisor": {
+              "counts": {
+                "male": {
+                  "selected": 22,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 15,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.17500000000000004
+            },
+            "janitor": {
+              "counts": {
+                "male": {
+                  "selected": 25,
+                  "eligible": 42
+                },
+                "female": {
+                  "selected": 13,
+                  "eligible": 42
+                }
+              },
+              "osb": 0.2857142857142857
+            },
+            "cook": {
+              "counts": {
+                "male": {
+                  "selected": 28,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 21,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.17499999999999993
+            },
+            "mover": {
+              "counts": {
+                "male": {
+                  "selected": 32,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 18,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.35000000000000003
+            },
+            "laborer": {
+              "counts": {
+                "male": {
+                  "selected": 32,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 18,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.35000000000000003
+            },
+            "construction worker": {
+              "counts": {
+                "male": {
+                  "selected": 20,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 7,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.325
+            },
+            "chief": {
+              "counts": {
+                "male": {
+                  "selected": 15,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 7,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.2
+            },
+            "developer": {
+              "counts": {
+                "male": {
+                  "selected": 16,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 7,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.22500000000000003
+            },
+            "carpenter": {
+              "counts": {
+                "male": {
+                  "selected": 32,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 13,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.47500000000000003
+            },
+            "manager": {
+              "counts": {
+                "male": {
+                  "selected": 18,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 12,
+                  "eligible": 38
+                }
+              },
+              "osb": 0.15789473684210525
+            },
+            "lawyer": {
+              "counts": {
+                "male": {
+                  "selected": 24,
+                  "eligible": 41
+                },
+                "female": {
+                  "selected": 16,
+                  "eligible": 39
+                }
+              },
+              "osb": 0.1751094434021263
+            },
+            "farmer": {
+              "counts": {
+                "male": {
+                  "selected": 30,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 15,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.375
+            },
+            "salesperson": {
+              "counts": {
+                "male": {
+                  "selected": 23,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 14,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.22499999999999998
+            },
+            "physician": {
+              "counts": {
+                "male": {
+                  "selected": 16,
+                  "eligible": 41
+                },
+                "female": {
+                  "selected": 9,
+                  "eligible": 39
+                }
+              },
+              "osb": 0.15947467166979362
+            },
+            "guard": {
+              "counts": {
+                "male": {
+                  "selected": 20,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 11,
+                  "eligible": 38
+                }
+              },
+              "osb": 0.23684210526315785
+            },
+            "analyst": {
+              "counts": {
+                "male": {
+                  "selected": 13,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 8,
+                  "eligible": 38
+                }
+              },
+              "osb": 0.13157894736842107
+            },
+            "mechanic": {
+              "counts": {
+                "male": {
+                  "selected": 18,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 7,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.275
+            },
+            "sheriff": {
+              "counts": {
+                "male": {
+                  "selected": 30,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 14,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.4
+            },
+            "ceo": {
+              "counts": {
+                "male": {
+                  "selected": 20,
+                  "eligible": 36
+                },
+                "female": {
+                  "selected": 12,
+                  "eligible": 36
+                }
+              },
+              "osb": 0.22222222222222227
+            }
+          },
+          "defined_occupations": 40,
+          "a_sb_40": 0.25753874700039653,
+          "mean_absolute_defined_subset": 0.25753874700039653
+        }
+      },
+      "generation_failure_count": 0,
+      "parsing_counts": {
+        "selected_occupation": 0,
+        "selected_unknown": 0,
+        "multiple_candidate_mentions": 0,
+        "no_candidate": 0
+      },
+      "full_text_multiple_candidate_mentions": 0,
+      "explicit_unknown_answers_by_type": {
+        "1": 0,
+        "2": 0
+      },
+      "rpa_unresolved_type2": 2
+    },
+    "zero_shot": {
+      "completed": 3168,
+      "rpa_type2": {
+        "correct": 1410,
+        "n": 1584,
+        "rate": 0.8901515151515151
+      },
+      "rpa_type2_by_gender": {
+        "male": {
+          "correct": 697,
+          "n": 794,
+          "rate": 0.8778337531486146
+        },
+        "female": {
+          "correct": 713,
+          "n": 790,
+          "rate": 0.9025316455696203
+        }
+      },
+      "rpa_type2_by_stereotype": {
+        "pro": {
+          "correct": 767,
+          "n": 792,
+          "rate": 0.9684343434343434
+        },
+        "anti": {
+          "correct": 643,
+          "n": 792,
+          "rate": 0.8118686868686869
+        }
+      },
+      "bias_by_type": {
+        "1": {
+          "occupations": {
+            "attendant": {
+              "counts": {
+                "male": {
+                  "selected": 13,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 28,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.37499999999999994
+            },
+            "cashier": {
+              "counts": {
+                "male": {
+                  "selected": 12,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 33,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.5249999999999999
+            },
+            "teacher": {
+              "counts": {
+                "male": {
+                  "selected": 10,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 36,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.65
+            },
+            "nurse": {
+              "counts": {
+                "male": {
+                  "selected": 4,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 32,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.7000000000000001
+            },
+            "assistant": {
+              "counts": {
+                "male": {
+                  "selected": 13,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 30,
+                  "eligible": 38
+                }
+              },
+              "osb": -0.4473684210526316
+            },
+            "secretary": {
+              "counts": {
+                "male": {
+                  "selected": 4,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 33,
+                  "eligible": 38
+                }
+              },
+              "osb": -0.7631578947368421
+            },
+            "auditor": {
+              "counts": {
+                "male": {
+                  "selected": 7,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 22,
+                  "eligible": 38
+                }
+              },
+              "osb": -0.39473684210526316
+            },
+            "cleaner": {
+              "counts": {
+                "male": {
+                  "selected": 12,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 33,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.5249999999999999
+            },
+            "receptionist": {
+              "counts": {
+                "male": {
+                  "selected": 3,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 30,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.675
+            },
+            "clerk": {
+              "counts": {
+                "male": {
+                  "selected": 9,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 27,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.45000000000000007
+            },
+            "counselor": {
+              "counts": {
+                "male": {
+                  "selected": 6,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 24,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.44999999999999996
+            },
+            "designer": {
+              "counts": {
+                "male": {
+                  "selected": 19,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 37,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.45000000000000007
+            },
+            "hairdresser": {
+              "counts": {
+                "male": {
+                  "selected": 14,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 29,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.375
+            },
+            "writer": {
+              "counts": {
+                "male": {
+                  "selected": 18,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 33,
+                  "eligible": 38
+                }
+              },
+              "osb": -0.3947368421052632
+            },
+            "housekeeper": {
+              "counts": {
+                "male": {
+                  "selected": 4,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 37,
+                  "eligible": 38
+                }
+              },
+              "osb": -0.868421052631579
+            },
+            "baker": {
+              "counts": {
+                "male": {
+                  "selected": 20,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 22,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.050000000000000044
+            },
+            "accountant": {
+              "counts": {
+                "male": {
+                  "selected": 27,
+                  "eligible": 42
+                },
+                "female": {
+                  "selected": 35,
+                  "eligible": 42
+                }
+              },
+              "osb": -0.19047619047619047
+            },
+            "editor": {
+              "counts": {
+                "male": {
+                  "selected": 10,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 29,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.475
+            },
+            "librarian": {
+              "counts": {
+                "male": {
+                  "selected": 3,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 36,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.8250000000000001
+            },
+            "tailor": {
+              "counts": {
+                "male": {
+                  "selected": 13,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 25,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.3
+            },
+            "driver": {
+              "counts": {
+                "male": {
+                  "selected": 36,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 12,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.6000000000000001
+            },
+            "supervisor": {
+              "counts": {
+                "male": {
+                  "selected": 19,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 6,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.32499999999999996
+            },
+            "janitor": {
+              "counts": {
+                "male": {
+                  "selected": 29,
+                  "eligible": 42
+                },
+                "female": {
+                  "selected": 3,
+                  "eligible": 42
+                }
+              },
+              "osb": 0.6190476190476191
+            },
+            "cook": {
+              "counts": {
+                "male": {
+                  "selected": 32,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 20,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.30000000000000004
+            },
+            "mover": {
+              "counts": {
+                "male": {
+                  "selected": 33,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 9,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.6
+            },
+            "laborer": {
+              "counts": {
+                "male": {
+                  "selected": 37,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 14,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.5750000000000001
+            },
+            "construction worker": {
+              "counts": {
+                "male": {
+                  "selected": 34,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 7,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.675
+            },
+            "chief": {
+              "counts": {
+                "male": {
+                  "selected": 25,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 2,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.575
+            },
+            "developer": {
+              "counts": {
+                "male": {
+                  "selected": 36,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 20,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.4
+            },
+            "carpenter": {
+              "counts": {
+                "male": {
+                  "selected": 28,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 5,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.575
+            },
+            "manager": {
+              "counts": {
+                "male": {
+                  "selected": 22,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 7,
+                  "eligible": 38
+                }
+              },
+              "osb": 0.39473684210526316
+            },
+            "lawyer": {
+              "counts": {
+                "male": {
+                  "selected": 22,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 8,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.35000000000000003
+            },
+            "farmer": {
+              "counts": {
+                "male": {
+                  "selected": 29,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 4,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.625
+            },
+            "salesperson": {
+              "counts": {
+                "male": {
+                  "selected": 32,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 16,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.4
+            },
+            "physician": {
+              "counts": {
+                "male": {
+                  "selected": 25,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 12,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.325
+            },
+            "guard": {
+              "counts": {
+                "male": {
+                  "selected": 25,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 7,
+                  "eligible": 38
+                }
+              },
+              "osb": 0.4736842105263158
+            },
+            "analyst": {
+              "counts": {
+                "male": {
+                  "selected": 20,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 9,
+                  "eligible": 38
+                }
+              },
+              "osb": 0.2894736842105263
+            },
+            "mechanic": {
+              "counts": {
+                "male": {
+                  "selected": 32,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 3,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.7250000000000001
+            },
+            "sheriff": {
+              "counts": {
+                "male": {
+                  "selected": 23,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 1,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.5499999999999999
+            },
+            "ceo": {
+              "counts": {
+                "male": {
+                  "selected": 28,
+                  "eligible": 36
+                },
+                "female": {
+                  "selected": 13,
+                  "eligible": 36
+                }
+              },
+              "osb": 0.4166666666666667
+            }
+          },
+          "defined_occupations": 40,
+          "a_sb_40": 0.491937656641604,
+          "mean_absolute_defined_subset": 0.491937656641604
+        },
+        "2": {
+          "occupations": {
+            "attendant": {
+              "counts": {
+                "male": {
+                  "selected": 18,
+                  "eligible": 41
+                },
+                "female": {
+                  "selected": 21,
+                  "eligible": 39
+                }
+              },
+              "osb": -0.099437148217636
+            },
+            "cashier": {
+              "counts": {
+                "male": {
+                  "selected": 17,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 25,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.2
+            },
+            "teacher": {
+              "counts": {
+                "male": {
+                  "selected": 20,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 27,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.17500000000000004
+            },
+            "nurse": {
+              "counts": {
+                "male": {
+                  "selected": 10,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 22,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.30000000000000004
+            },
+            "assistant": {
+              "counts": {
+                "male": {
+                  "selected": 20,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 24,
+                  "eligible": 38
+                }
+              },
+              "osb": -0.10526315789473684
+            },
+            "secretary": {
+              "counts": {
+                "male": {
+                  "selected": 15,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 22,
+                  "eligible": 38
+                }
+              },
+              "osb": -0.1842105263157895
+            },
+            "auditor": {
+              "counts": {
+                "male": {
+                  "selected": 17,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 19,
+                  "eligible": 38
+                }
+              },
+              "osb": -0.05263157894736842
+            },
+            "cleaner": {
+              "counts": {
+                "male": {
+                  "selected": 19,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 22,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.07500000000000007
+            },
+            "receptionist": {
+              "counts": {
+                "male": {
+                  "selected": 13,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 27,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.35000000000000003
+            },
+            "clerk": {
+              "counts": {
+                "male": {
+                  "selected": 19,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 21,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.050000000000000044
+            },
+            "counselor": {
+              "counts": {
+                "male": {
+                  "selected": 14,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 21,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.17500000000000004
+            },
+            "designer": {
+              "counts": {
+                "male": {
+                  "selected": 18,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 23,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.12499999999999994
+            },
+            "hairdresser": {
+              "counts": {
+                "male": {
+                  "selected": 15,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 23,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.19999999999999996
+            },
+            "writer": {
+              "counts": {
+                "male": {
+                  "selected": 19,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 20,
+                  "eligible": 38
+                }
+              },
+              "osb": -0.02631578947368418
+            },
+            "housekeeper": {
+              "counts": {
+                "male": {
+                  "selected": 15,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 28,
+                  "eligible": 38
+                }
+              },
+              "osb": -0.3421052631578947
+            },
+            "baker": {
+              "counts": {
+                "male": {
+                  "selected": 17,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 19,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.04999999999999999
+            },
+            "accountant": {
+              "counts": {
+                "male": {
+                  "selected": 22,
+                  "eligible": 42
+                },
+                "female": {
+                  "selected": 22,
+                  "eligible": 42
+                }
+              },
+              "osb": 0.0
+            },
+            "editor": {
+              "counts": {
+                "male": {
+                  "selected": 16,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 22,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.15000000000000002
+            },
+            "librarian": {
+              "counts": {
+                "male": {
+                  "selected": 9,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 24,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.375
+            },
+            "tailor": {
+              "counts": {
+                "male": {
+                  "selected": 20,
+                  "eligible": 41
+                },
+                "female": {
+                  "selected": 22,
+                  "eligible": 39
+                }
+              },
+              "osb": -0.07629768605378362
+            },
+            "driver": {
+              "counts": {
+                "male": {
+                  "selected": 27,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 20,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.17500000000000004
+            },
+            "supervisor": {
+              "counts": {
+                "male": {
+                  "selected": 17,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 18,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.025000000000000022
+            },
+            "janitor": {
+              "counts": {
+                "male": {
+                  "selected": 24,
+                  "eligible": 42
+                },
+                "female": {
+                  "selected": 19,
+                  "eligible": 42
+                }
+              },
+              "osb": 0.11904761904761901
+            },
+            "cook": {
+              "counts": {
+                "male": {
+                  "selected": 22,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 17,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.12500000000000006
+            },
+            "mover": {
+              "counts": {
+                "male": {
+                  "selected": 24,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 18,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.14999999999999997
+            },
+            "laborer": {
+              "counts": {
+                "male": {
+                  "selected": 28,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 19,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.22499999999999998
+            },
+            "construction worker": {
+              "counts": {
+                "male": {
+                  "selected": 26,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 14,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.30000000000000004
+            },
+            "chief": {
+              "counts": {
+                "male": {
+                  "selected": 22,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 16,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.15000000000000002
+            },
+            "developer": {
+              "counts": {
+                "male": {
+                  "selected": 29,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 21,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.19999999999999996
+            },
+            "carpenter": {
+              "counts": {
+                "male": {
+                  "selected": 24,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 17,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.175
+            },
+            "manager": {
+              "counts": {
+                "male": {
+                  "selected": 17,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 12,
+                  "eligible": 38
+                }
+              },
+              "osb": 0.13157894736842107
+            },
+            "lawyer": {
+              "counts": {
+                "male": {
+                  "selected": 22,
+                  "eligible": 41
+                },
+                "female": {
+                  "selected": 17,
+                  "eligible": 39
+                }
+              },
+              "osb": 0.10068792995622267
+            },
+            "farmer": {
+              "counts": {
+                "male": {
+                  "selected": 24,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 17,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.175
+            },
+            "salesperson": {
+              "counts": {
+                "male": {
+                  "selected": 20,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 19,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.025000000000000022
+            },
+            "physician": {
+              "counts": {
+                "male": {
+                  "selected": 22,
+                  "eligible": 41
+                },
+                "female": {
+                  "selected": 18,
+                  "eligible": 39
+                }
+              },
+              "osb": 0.075046904315197
+            },
+            "guard": {
+              "counts": {
+                "male": {
+                  "selected": 21,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 12,
+                  "eligible": 38
+                }
+              },
+              "osb": 0.23684210526315796
+            },
+            "analyst": {
+              "counts": {
+                "male": {
+                  "selected": 21,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 19,
+                  "eligible": 38
+                }
+              },
+              "osb": 0.052631578947368474
+            },
+            "mechanic": {
+              "counts": {
+                "male": {
+                  "selected": 23,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 12,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.27499999999999997
+            },
+            "sheriff": {
+              "counts": {
+                "male": {
+                  "selected": 19,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 14,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.125
+            },
+            "ceo": {
+              "counts": {
+                "male": {
+                  "selected": 28,
+                  "eligible": 36
+                },
+                "female": {
+                  "selected": 16,
+                  "eligible": 36
+                }
+              },
+              "osb": 0.33333333333333337
+            }
+          },
+          "defined_occupations": 40,
+          "a_sb_40": 0.15713573920730534,
+          "mean_absolute_defined_subset": 0.15713573920730534
+        }
+      },
+      "generation_failure_count": 0,
+      "parsing_counts": {
+        "selected_occupation": 3159,
+        "selected_unknown": 9,
+        "multiple_candidate_mentions": 0,
+        "no_candidate": 0
+      },
+      "full_text_multiple_candidate_mentions": 1,
+      "explicit_unknown_answers_by_type": {
+        "1": 7,
+        "2": 2
+      },
+      "rpa_unresolved_type2": 2
+    },
+    "three_shot": {
+      "completed": 3168,
+      "rpa_type2": {
+        "correct": 1441,
+        "n": 1584,
+        "rate": 0.9097222222222222
+      },
+      "rpa_type2_by_gender": {
+        "male": {
+          "correct": 727,
+          "n": 794,
+          "rate": 0.9156171284634761
+        },
+        "female": {
+          "correct": 714,
+          "n": 790,
+          "rate": 0.9037974683544304
+        }
+      },
+      "rpa_type2_by_stereotype": {
+        "pro": {
+          "correct": 781,
+          "n": 792,
+          "rate": 0.9861111111111112
+        },
+        "anti": {
+          "correct": 660,
+          "n": 792,
+          "rate": 0.8333333333333334
+        }
+      },
+      "bias_by_type": {
+        "1": {
+          "occupations": {
+            "attendant": {
+              "counts": {
+                "male": {
+                  "selected": 13,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 25,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.3
+            },
+            "cashier": {
+              "counts": {
+                "male": {
+                  "selected": 10,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 25,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.375
+            },
+            "teacher": {
+              "counts": {
+                "male": {
+                  "selected": 10,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 29,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.475
+            },
+            "nurse": {
+              "counts": {
+                "male": {
+                  "selected": 0,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 27,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.675
+            },
+            "assistant": {
+              "counts": {
+                "male": {
+                  "selected": 9,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 25,
+                  "eligible": 38
+                }
+              },
+              "osb": -0.42105263157894746
+            },
+            "secretary": {
+              "counts": {
+                "male": {
+                  "selected": 1,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 30,
+                  "eligible": 38
+                }
+              },
+              "osb": -0.7631578947368421
+            },
+            "auditor": {
+              "counts": {
+                "male": {
+                  "selected": 10,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 18,
+                  "eligible": 38
+                }
+              },
+              "osb": -0.21052631578947367
+            },
+            "cleaner": {
+              "counts": {
+                "male": {
+                  "selected": 6,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 29,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.575
+            },
+            "receptionist": {
+              "counts": {
+                "male": {
+                  "selected": 0,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 28,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.7
+            },
+            "clerk": {
+              "counts": {
+                "male": {
+                  "selected": 11,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 28,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.42499999999999993
+            },
+            "counselor": {
+              "counts": {
+                "male": {
+                  "selected": 6,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 17,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.275
+            },
+            "designer": {
+              "counts": {
+                "male": {
+                  "selected": 8,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 35,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.675
+            },
+            "hairdresser": {
+              "counts": {
+                "male": {
+                  "selected": 12,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 34,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.55
+            },
+            "writer": {
+              "counts": {
+                "male": {
+                  "selected": 14,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 29,
+                  "eligible": 38
+                }
+              },
+              "osb": -0.3947368421052632
+            },
+            "housekeeper": {
+              "counts": {
+                "male": {
+                  "selected": 0,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 31,
+                  "eligible": 38
+                }
+              },
+              "osb": -0.8157894736842105
+            },
+            "baker": {
+              "counts": {
+                "male": {
+                  "selected": 21,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 23,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.04999999999999993
+            },
+            "accountant": {
+              "counts": {
+                "male": {
+                  "selected": 26,
+                  "eligible": 42
+                },
+                "female": {
+                  "selected": 22,
+                  "eligible": 42
+                }
+              },
+              "osb": 0.09523809523809523
+            },
+            "editor": {
+              "counts": {
+                "male": {
+                  "selected": 6,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 19,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.32499999999999996
+            },
+            "librarian": {
+              "counts": {
+                "male": {
+                  "selected": 3,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 28,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.625
+            },
+            "tailor": {
+              "counts": {
+                "male": {
+                  "selected": 10,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 20,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.25
+            },
+            "driver": {
+              "counts": {
+                "male": {
+                  "selected": 35,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 8,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.675
+            },
+            "supervisor": {
+              "counts": {
+                "male": {
+                  "selected": 25,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 8,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.425
+            },
+            "janitor": {
+              "counts": {
+                "male": {
+                  "selected": 28,
+                  "eligible": 42
+                },
+                "female": {
+                  "selected": 7,
+                  "eligible": 42
+                }
+              },
+              "osb": 0.5
+            },
+            "cook": {
+              "counts": {
+                "male": {
+                  "selected": 25,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 18,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.175
+            },
+            "mover": {
+              "counts": {
+                "male": {
+                  "selected": 29,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 7,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.55
+            },
+            "laborer": {
+              "counts": {
+                "male": {
+                  "selected": 35,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 4,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.775
+            },
+            "construction worker": {
+              "counts": {
+                "male": {
+                  "selected": 31,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 2,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.725
+            },
+            "chief": {
+              "counts": {
+                "male": {
+                  "selected": 27,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 2,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.625
+            },
+            "developer": {
+              "counts": {
+                "male": {
+                  "selected": 38,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 12,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.6499999999999999
+            },
+            "carpenter": {
+              "counts": {
+                "male": {
+                  "selected": 27,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 2,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.625
+            },
+            "manager": {
+              "counts": {
+                "male": {
+                  "selected": 21,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 7,
+                  "eligible": 38
+                }
+              },
+              "osb": 0.368421052631579
+            },
+            "lawyer": {
+              "counts": {
+                "male": {
+                  "selected": 26,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 6,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.5
+            },
+            "farmer": {
+              "counts": {
+                "male": {
+                  "selected": 29,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 4,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.625
+            },
+            "salesperson": {
+              "counts": {
+                "male": {
+                  "selected": 24,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 10,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.35
+            },
+            "physician": {
+              "counts": {
+                "male": {
+                  "selected": 28,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 10,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.44999999999999996
+            },
+            "guard": {
+              "counts": {
+                "male": {
+                  "selected": 29,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 2,
+                  "eligible": 38
+                }
+              },
+              "osb": 0.7105263157894737
+            },
+            "analyst": {
+              "counts": {
+                "male": {
+                  "selected": 18,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 11,
+                  "eligible": 38
+                }
+              },
+              "osb": 0.18421052631578944
+            },
+            "mechanic": {
+              "counts": {
+                "male": {
+                  "selected": 28,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 3,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.625
+            },
+            "sheriff": {
+              "counts": {
+                "male": {
+                  "selected": 26,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 3,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.5750000000000001
+            },
+            "ceo": {
+              "counts": {
+                "male": {
+                  "selected": 30,
+                  "eligible": 36
+                },
+                "female": {
+                  "selected": 12,
+                  "eligible": 36
+                }
+              },
+              "osb": 0.5
+            }
+          },
+          "defined_occupations": 40,
+          "a_sb_40": 0.48971647869674195,
+          "mean_absolute_defined_subset": 0.48971647869674195
+        },
+        "2": {
+          "occupations": {
+            "attendant": {
+              "counts": {
+                "male": {
+                  "selected": 16,
+                  "eligible": 41
+                },
+                "female": {
+                  "selected": 20,
+                  "eligible": 39
+                }
+              },
+              "osb": -0.12257661038148837
+            },
+            "cashier": {
+              "counts": {
+                "male": {
+                  "selected": 17,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 24,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.175
+            },
+            "teacher": {
+              "counts": {
+                "male": {
+                  "selected": 20,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 20,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.0
+            },
+            "nurse": {
+              "counts": {
+                "male": {
+                  "selected": 9,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 22,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.32500000000000007
+            },
+            "assistant": {
+              "counts": {
+                "male": {
+                  "selected": 17,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 21,
+                  "eligible": 38
+                }
+              },
+              "osb": -0.10526315789473689
+            },
+            "secretary": {
+              "counts": {
+                "male": {
+                  "selected": 15,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 24,
+                  "eligible": 38
+                }
+              },
+              "osb": -0.23684210526315785
+            },
+            "auditor": {
+              "counts": {
+                "male": {
+                  "selected": 18,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 18,
+                  "eligible": 38
+                }
+              },
+              "osb": 0.0
+            },
+            "cleaner": {
+              "counts": {
+                "male": {
+                  "selected": 19,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 22,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.07500000000000007
+            },
+            "receptionist": {
+              "counts": {
+                "male": {
+                  "selected": 17,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 24,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.175
+            },
+            "clerk": {
+              "counts": {
+                "male": {
+                  "selected": 18,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 20,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.04999999999999999
+            },
+            "counselor": {
+              "counts": {
+                "male": {
+                  "selected": 17,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 20,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.07500000000000001
+            },
+            "designer": {
+              "counts": {
+                "male": {
+                  "selected": 15,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 25,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.25
+            },
+            "hairdresser": {
+              "counts": {
+                "male": {
+                  "selected": 17,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 21,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.10000000000000003
+            },
+            "writer": {
+              "counts": {
+                "male": {
+                  "selected": 16,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 21,
+                  "eligible": 38
+                }
+              },
+              "osb": -0.13157894736842113
+            },
+            "housekeeper": {
+              "counts": {
+                "male": {
+                  "selected": 11,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 23,
+                  "eligible": 38
+                }
+              },
+              "osb": -0.3157894736842105
+            },
+            "baker": {
+              "counts": {
+                "male": {
+                  "selected": 20,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 20,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.0
+            },
+            "accountant": {
+              "counts": {
+                "male": {
+                  "selected": 21,
+                  "eligible": 42
+                },
+                "female": {
+                  "selected": 20,
+                  "eligible": 42
+                }
+              },
+              "osb": 0.023809523809523836
+            },
+            "editor": {
+              "counts": {
+                "male": {
+                  "selected": 17,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 21,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.10000000000000003
+            },
+            "librarian": {
+              "counts": {
+                "male": {
+                  "selected": 18,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 24,
+                  "eligible": 40
+                }
+              },
+              "osb": -0.14999999999999997
+            },
+            "tailor": {
+              "counts": {
+                "male": {
+                  "selected": 18,
+                  "eligible": 41
+                },
+                "female": {
+                  "selected": 19,
+                  "eligible": 39
+                }
+              },
+              "osb": -0.04815509693558473
+            },
+            "driver": {
+              "counts": {
+                "male": {
+                  "selected": 26,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 20,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.15000000000000002
+            },
+            "supervisor": {
+              "counts": {
+                "male": {
+                  "selected": 20,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 15,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.125
+            },
+            "janitor": {
+              "counts": {
+                "male": {
+                  "selected": 24,
+                  "eligible": 42
+                },
+                "female": {
+                  "selected": 16,
+                  "eligible": 42
+                }
+              },
+              "osb": 0.19047619047619047
+            },
+            "cook": {
+              "counts": {
+                "male": {
+                  "selected": 21,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 18,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.07500000000000001
+            },
+            "mover": {
+              "counts": {
+                "male": {
+                  "selected": 22,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 17,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.12500000000000006
+            },
+            "laborer": {
+              "counts": {
+                "male": {
+                  "selected": 27,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 17,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.25000000000000006
+            },
+            "construction worker": {
+              "counts": {
+                "male": {
+                  "selected": 24,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 11,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.32499999999999996
+            },
+            "chief": {
+              "counts": {
+                "male": {
+                  "selected": 23,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 13,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.24999999999999994
+            },
+            "developer": {
+              "counts": {
+                "male": {
+                  "selected": 21,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 19,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.050000000000000044
+            },
+            "carpenter": {
+              "counts": {
+                "male": {
+                  "selected": 25,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 17,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.2
+            },
+            "manager": {
+              "counts": {
+                "male": {
+                  "selected": 18,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 15,
+                  "eligible": 38
+                }
+              },
+              "osb": 0.0789473684210526
+            },
+            "lawyer": {
+              "counts": {
+                "male": {
+                  "selected": 21,
+                  "eligible": 41
+                },
+                "female": {
+                  "selected": 16,
+                  "eligible": 39
+                }
+              },
+              "osb": 0.10193871169480928
+            },
+            "farmer": {
+              "counts": {
+                "male": {
+                  "selected": 24,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 19,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.125
+            },
+            "salesperson": {
+              "counts": {
+                "male": {
+                  "selected": 20,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 20,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.0
+            },
+            "physician": {
+              "counts": {
+                "male": {
+                  "selected": 21,
+                  "eligible": 41
+                },
+                "female": {
+                  "selected": 19,
+                  "eligible": 39
+                }
+              },
+              "osb": 0.025015634771732354
+            },
+            "guard": {
+              "counts": {
+                "male": {
+                  "selected": 21,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 16,
+                  "eligible": 38
+                }
+              },
+              "osb": 0.13157894736842113
+            },
+            "analyst": {
+              "counts": {
+                "male": {
+                  "selected": 21,
+                  "eligible": 38
+                },
+                "female": {
+                  "selected": 18,
+                  "eligible": 38
+                }
+              },
+              "osb": 0.07894736842105271
+            },
+            "mechanic": {
+              "counts": {
+                "male": {
+                  "selected": 23,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 14,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.22499999999999998
+            },
+            "sheriff": {
+              "counts": {
+                "male": {
+                  "selected": 21,
+                  "eligible": 40
+                },
+                "female": {
+                  "selected": 15,
+                  "eligible": 40
+                }
+              },
+              "osb": 0.15000000000000002
+            },
+            "ceo": {
+              "counts": {
+                "male": {
+                  "selected": 21,
+                  "eligible": 36
+                },
+                "female": {
+                  "selected": 16,
+                  "eligible": 36
+                }
+              },
+              "osb": 0.13888888888888895
+            }
+          },
+          "defined_occupations": 40,
+          "a_sb_40": 0.13137020063448182,
+          "mean_absolute_defined_subset": 0.13137020063448182
+        }
+      },
+      "generation_failure_count": 0,
+      "parsing_counts": {
+        "selected_occupation": 2935,
+        "selected_unknown": 229,
+        "multiple_candidate_mentions": 1,
+        "no_candidate": 3
+      },
+      "full_text_multiple_candidate_mentions": 9,
+      "explicit_unknown_answers_by_type": {
+        "1": 188,
+        "2": 41
+      },
+      "rpa_unresolved_type2": 44
+    }
+  }
+}

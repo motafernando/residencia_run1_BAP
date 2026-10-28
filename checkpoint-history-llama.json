@@ -1,0 +1,215 @@
+{
+  "repo_id": "meta-llama/Meta-Llama-3-8B-Instruct",
+  "retrieved_utc": "2026-10-27T04:57:22.065994+00:00",
+  "metadata_source": "https://huggingface.co/api/models/meta-llama/Meta-Llama-3-8B-Instruct",
+  "commits_url": "https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct/commits/main",
+  "historical_cutoff": "2025-09-09T20:59:50+00:00",
+  "candidate_basis": "Most recent commit returned before the first public arXiv submission; not confirmed as the authors' revision.",
+  "weights_downloaded_in_this_inventory": false,
+  "identifier_note": "LFS entries include SHA-256. git_blob_id is a Git object SHA-1, not SHA-256.",
+  "snapshots": {
+    "candidate_2025": {
+      "revision": "8afb486c1db24fe5011ec46dfbe5b5dccdb575c2",
+      "created_at_utc": "2025-06-18T23:49:51+00:00",
+      "commit_title": "Remove inference parameters from README.md (#229)",
+      "commit_url": "https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct/commit/8afb486c1db24fe5011ec46dfbe5b5dccdb575c2",
+      "files": {
+        "config.json": {
+          "size_bytes": 654,
+          "git_blob_id": "31553d63b8f18df5d6d440860751533ada3759e4",
+          "lfs_sha256": null
+        },
+        "generation_config.json": {
+          "size_bytes": 187,
+          "git_blob_id": "8675015d20a4b12ee2ee0197a0937beba318122a",
+          "lfs_sha256": null
+        },
+        "model-00001-of-00004.safetensors": {
+          "size_bytes": 4976698672,
+          "git_blob_id": "69e1a8787496ffc0b3818d23d11036ef12e9eb8d",
+          "lfs_sha256": "d8cf9c4d0dd972e1a2131bfe656235ee98221679711a3beef6d46dadf0f20b5c"
+        },
+        "model-00002-of-00004.safetensors": {
+          "size_bytes": 4999802720,
+          "git_blob_id": "3a8b51f9a991e3118837b93445a3f4647125a085",
+          "lfs_sha256": "8d4782b4a69ef03845159ce1a15e272aadaaf134dc138d68f616098e8531729c"
+        },
+        "model-00003-of-00004.safetensors": {
+          "size_bytes": 4915916176,
+          "git_blob_id": "706b3a174d9f0de9aec8b81231e32f349bfe4fe0",
+          "lfs_sha256": "3acdd690e65c24f42a24581b8467af98bd3ca357444580f8012aacd2bd607921"
+        },
+        "model-00004-of-00004.safetensors": {
+          "size_bytes": 1168138808,
+          "git_blob_id": "280b9208b3412064a64594f4449cf89dfa014353",
+          "lfs_sha256": "67e9ad31c8c32abf3a55ee7fc7217b3ecb35fd3c74d98a5bd233e0e4d6964f46"
+        },
+        "model.safetensors.index.json": {
+          "size_bytes": 23950,
+          "git_blob_id": "0fd8120f1c6acddc268ebc2583058efaf699a771",
+          "lfs_sha256": null
+        },
+        "original/tokenizer.model": {
+          "size_bytes": 2183982,
+          "git_blob_id": "a097ce5a06fce0fa3d685a8cfb175cef243dfde9",
+          "lfs_sha256": "82e9d31979e92ab929cd544440f129d9ecd797b69e327f80f17e1c50d5551b55"
+        },
+        "special_tokens_map.json": {
+          "size_bytes": 73,
+          "git_blob_id": "d8cd5076496dbe4be2320312abc10adc43097b81",
+          "lfs_sha256": null
+        },
+        "tokenizer.json": {
+          "size_bytes": 9085698,
+          "git_blob_id": "b197f72effb9d5ed16ee0f5663e11e4cfac2ba62",
+          "lfs_sha256": null
+        },
+        "tokenizer_config.json": {
+          "size_bytes": 50977,
+          "git_blob_id": "1bfd1146b7bde6168de7bb673bfe0acaea6e684c",
+          "lfs_sha256": null
+        }
+      }
+    },
+    "original_transformers_upload_2024": {
+      "revision": "24369f4fd182a5aace487b975fcee7fb63bce0f4",
+      "created_at_utc": "2024-04-18T07:41:12+00:00",
+      "commit_title": "Upload original checkpoint (#1)",
+      "commit_url": "https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct/commit/24369f4fd182a5aace487b975fcee7fb63bce0f4",
+      "files": {
+        "config.json": {
+          "size_bytes": 654,
+          "git_blob_id": "7784fbf6342de338b736f884a49b08f270c5e9c8",
+          "lfs_sha256": null
+        },
+        "generation_config.json": {
+          "size_bytes": 126,
+          "git_blob_id": "435836597c47e33ddd12db0bb6e7d001cb543f62",
+          "lfs_sha256": null
+        },
+        "model-00001-of-00004.safetensors": {
+          "size_bytes": 4976698672,
+          "git_blob_id": "69e1a8787496ffc0b3818d23d11036ef12e9eb8d",
+          "lfs_sha256": "d8cf9c4d0dd972e1a2131bfe656235ee98221679711a3beef6d46dadf0f20b5c"
+        },
+        "model-00002-of-00004.safetensors": {
+          "size_bytes": 4999802720,
+          "git_blob_id": "3a8b51f9a991e3118837b93445a3f4647125a085",
+          "lfs_sha256": "8d4782b4a69ef03845159ce1a15e272aadaaf134dc138d68f616098e8531729c"
+        },
+        "model-00003-of-00004.safetensors": {
+          "size_bytes": 4915916176,
+          "git_blob_id": "706b3a174d9f0de9aec8b81231e32f349bfe4fe0",
+          "lfs_sha256": "3acdd690e65c24f42a24581b8467af98bd3ca357444580f8012aacd2bd607921"
+        },
+        "model-00004-of-00004.safetensors": {
+          "size_bytes": 1168138808,
+          "git_blob_id": "280b9208b3412064a64594f4449cf89dfa014353",
+          "lfs_sha256": "67e9ad31c8c32abf3a55ee7fc7217b3ecb35fd3c74d98a5bd233e0e4d6964f46"
+        },
+        "model.safetensors.index.json": {
+          "size_bytes": 23950,
+          "git_blob_id": "0fd8120f1c6acddc268ebc2583058efaf699a771",
+          "lfs_sha256": null
+        },
+        "original/tokenizer.model": {
+          "size_bytes": 2183982,
+          "git_blob_id": "a097ce5a06fce0fa3d685a8cfb175cef243dfde9",
+          "lfs_sha256": "82e9d31979e92ab929cd544440f129d9ecd797b69e327f80f17e1c50d5551b55"
+        },
+        "special_tokens_map.json": {
+          "size_bytes": 73,
+          "git_blob_id": "d8cd5076496dbe4be2320312abc10adc43097b81",
+          "lfs_sha256": null
+        },
+        "tokenizer.json": {
+          "size_bytes": 9084490,
+          "git_blob_id": "94eacd0897072dcd7b84d1f6ff3c3f6d1933a8cc",
+          "lfs_sha256": null
+        },
+        "tokenizer_config.json": {
+          "size_bytes": 50941,
+          "git_blob_id": "57771754088b283bd5f6405618e54b39b589d9b8",
+          "lfs_sha256": null
+        }
+      }
+    }
+  },
+  "candidate_vs_original_comparison": {
+    "config.json": {
+      "same_content": false,
+      "candidate_git_blob_id": "31553d63b8f18df5d6d440860751533ada3759e4",
+      "original_git_blob_id": "7784fbf6342de338b736f884a49b08f270c5e9c8"
+    },
+    "generation_config.json": {
+      "same_content": false,
+      "candidate_git_blob_id": "8675015d20a4b12ee2ee0197a0937beba318122a",
+      "original_git_blob_id": "435836597c47e33ddd12db0bb6e7d001cb543f62"
+    },
+    "model-00001-of-00004.safetensors": {
+      "same_content": true,
+      "candidate_git_blob_id": "69e1a8787496ffc0b3818d23d11036ef12e9eb8d",
+      "original_git_blob_id": "69e1a8787496ffc0b3818d23d11036ef12e9eb8d"
+    },
+    "model-00002-of-00004.safetensors": {
+      "same_content": true,
+      "candidate_git_blob_id": "3a8b51f9a991e3118837b93445a3f4647125a085",
+      "original_git_blob_id": "3a8b51f9a991e3118837b93445a3f4647125a085"
+    },
+    "model-00003-of-00004.safetensors": {
+      "same_content": true,
+      "candidate_git_blob_id": "706b3a174d9f0de9aec8b81231e32f349bfe4fe0",
+      "original_git_blob_id": "706b3a174d9f0de9aec8b81231e32f349bfe4fe0"
+    },
+    "model-00004-of-00004.safetensors": {
+      "same_content": true,
+      "candidate_git_blob_id": "280b9208b3412064a64594f4449cf89dfa014353",
+      "original_git_blob_id": "280b9208b3412064a64594f4449cf89dfa014353"
+    },
+    "model.safetensors.index.json": {
+      "same_content": true,
+      "candidate_git_blob_id": "0fd8120f1c6acddc268ebc2583058efaf699a771",
+      "original_git_blob_id": "0fd8120f1c6acddc268ebc2583058efaf699a771"
+    },
+    "original/tokenizer.model": {
+      "same_content": true,
+      "candidate_git_blob_id": "a097ce5a06fce0fa3d685a8cfb175cef243dfde9",
+      "original_git_blob_id": "a097ce5a06fce0fa3d685a8cfb175cef243dfde9"
+    },
+    "special_tokens_map.json": {
+      "same_content": true,
+      "candidate_git_blob_id": "d8cd5076496dbe4be2320312abc10adc43097b81",
+      "original_git_blob_id": "d8cd5076496dbe4be2320312abc10adc43097b81"
+    },
+    "tokenizer.json": {
+      "same_content": false,
+      "candidate_git_blob_id": "b197f72effb9d5ed16ee0f5663e11e4cfac2ba62",
+      "original_git_blob_id": "94eacd0897072dcd7b84d1f6ff3c3f6d1933a8cc"
+    },
+    "tokenizer_config.json": {
+      "same_content": false,
+      "candidate_git_blob_id": "1bfd1146b7bde6168de7bb673bfe0acaea6e684c",
+      "original_git_blob_id": "57771754088b283bd5f6405618e54b39b589d9b8"
+    }
+  },
+  "related_commits": [
+    {
+      "revision": "339ce92d052f002cdbac4a4bd551d1c61dd8345e",
+      "created_at_utc": "2024-04-23T11:33:49+00:00",
+      "title": "Update post-processor to add bos (#42)",
+      "url": "https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct/commit/339ce92d052f002cdbac4a4bd551d1c61dd8345e"
+    },
+    {
+      "revision": "a8977699a3d0820e80129fb3c93c20fbd9972c41",
+      "created_at_utc": "2024-05-10T06:24:30+00:00",
+      "title": "Update tokenizer_config.json (#60)",
+      "url": "https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct/commit/a8977699a3d0820e80129fb3c93c20fbd9972c41"
+    },
+    {
+      "revision": "4d6c61da057c45bfc4dc4d3bfa5a691ecb9ce0cf",
+      "created_at_utc": "2024-05-13T06:54:16+00:00",
+      "title": "Update config.json (#105)",
+      "url": "https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct/commit/4d6c61da057c45bfc4dc4d3bfa5a691ecb9ce0cf"
+    }
+  ]
+}

@@ -1,0 +1,181 @@
+{
+  "status": "inference_finished_needs_manual_review",
+  "created_utc": "20261026T212312065659Z",
+  "sample_size": 3168,
+  "conditions": [
+    "intrinsic",
+    "zero_shot",
+    "three_shot"
+  ],
+  "dataset_revision": "0bce984dd081bbc10b0622f326727a024c607895",
+  "input_hashes": {
+    "sample": "5d1d0dd55853a6a785051ff8115d38a77a361f006e21a6c6a63c41c639dabf26",
+    "inventory": "afd6e20ca6af9c95e4e7964b101471a59fc3610391f1b7d5aee6b2630c04f573"
+  },
+  "code_hashes": {
+    "prepare.py": "79bed549b16b3ba54882d283211a6afdae0bee94bfa8667e13ebc16390711d08",
+    "protocol.py": "e0a5f25356fbd1f094f544670c2b7064707509e111459aab08d5a117e9a0c98d",
+    "parser_v3.py": "3c3f4329756f721b7412bd6a12993293fd1f345e7b77036a82a99eeeadde3e3c",
+    "run.py": "bbffd1095a7194d398ff1e8d5b757e4d3b9994511e30b1a1daa9cfafca63b421"
+  },
+  "parser_version": "v3_letter_fallback",
+  "prompt_variant": "refined",
+  "environment": {
+    "python": "3.11.13",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+    "image_id": "sha256:7677a580378b0c18d6220c83050bb3c20ef5b80cf6da7f686f146ea0799ebb42",
+    "packages": {
+      "torch": "2.7.1+cu128",
+      "transformers": "4.51.3",
+      "accelerate": "1.6.0",
+      "huggingface-hub": "0.30.2",
+      "tokenizers": "0.21.1",
+      "safetensors": "0.5.3"
+    },
+    "container_package_freeze": "accelerate==1.6.0\narchspec @ file:///home/conda/feedstock_root/build_artifacts/archspec_1737352602016/work\nasttokens @ file:///home/conda/feedstock_root/build_artifacts/asttokens_1733250440834/work\nastunparse==1.6.3\nattrs @ file:///home/conda/feedstock_root/build_artifacts/attrs_1741918516150/work\nbeautifulsoup4 @ file:///home/conda/feedstock_root/build_artifacts/beautifulsoup4_1744783198182/work\nboltons @ file:///home/conda/feedstock_root/build_artifacts/boltons_1733827268945/work\nBrotli @ file:///home/conda/feedstock_root/build_artifacts/brotli-split_1725267488082/work\ncertifi @ file:///home/conda/feedstock_root/build_artifacts/certifi_1746569525376/work/certifi\ncffi @ file:///home/conda/feedstock_root/build_artifacts/cffi_1725560564262/work\nchardet @ file:///home/conda/feedstock_root/build_artifacts/chardet_1741797914774/work\ncharset-normalizer @ file:///home/conda/feedstock_root/build_artifacts/charset-normalizer_1746214863626/work\nclick @ file:///home/conda/feedstock_root/build_artifacts/click_1747811314515/work\ncmake==4.0.2\ncolorama @ file:///home/conda/feedstock_root/build_artifacts/colorama_1733218098505/work\nconda @ file:///home/conda/feedstock_root/build_artifacts/conda_1748334230838/work/conda-src\nconda-build @ file:///home/conda/feedstock_root/build_artifacts/conda-build_1748431289756/work\nconda-libmamba-solver @ file:///home/conda/feedstock_root/build_artifacts/conda-libmamba-solver_1742219570693/work/src\nconda-package-handling @ file:///home/conda/feedstock_root/build_artifacts/conda-package-handling_1736345463896/work\nconda_index @ file:///home/conda/feedstock_root/build_artifacts/conda-index_1748375757308/work\nconda_package_streaming @ file:///home/conda/feedstock_root/build_artifacts/conda-package-streaming_1741620732069/work\ndecorator @ file:///home/conda/feedstock_root/build_artifacts/decorator_1740384970518/work\ndistro @ file:///home/conda/feedstock_root/build_artifacts/distro_1734729835256/work\ndnspython==2.7.0\nevalidate @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_evalidate_1746793833/work\nexceptiongroup @ file:///home/conda/feedstock_root/build_artifacts/exceptiongroup_1746947292760/work\nexecuting @ file:///home/conda/feedstock_root/build_artifacts/executing_1745502089858/work\nexpecttest==0.3.0\nfilelock @ file:///home/conda/feedstock_root/build_artifacts/filelock_1741969488311/work\nfrozendict @ file:///home/conda/feedstock_root/build_artifacts/frozendict_1728841334936/work\nfsspec==2025.3.2\nh2 @ file:///home/conda/feedstock_root/build_artifacts/h2_1738578511449/work\nhpack @ file:///home/conda/feedstock_root/build_artifacts/hpack_1737618293087/work\nhuggingface-hub==0.30.2\nhyperframe @ file:///home/conda/feedstock_root/build_artifacts/hyperframe_1737618333194/work\nhypothesis==6.135.0\nidna @ file:///home/conda/feedstock_root/build_artifacts/idna_1733211830134/work\nimportlib_resources @ file:///home/conda/feedstock_root/build_artifacts/importlib_resources_1736252299705/work\nipython @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_ipython_1748713870/work\nipython_pygments_lexers @ file:///home/conda/feedstock_root/build_artifacts/ipython_pygments_lexers_1737123620466/work\njedi @ file:///home/conda/feedstock_root/build_artifacts/jedi_1733300866624/work\nJinja2 @ file:///home/conda/feedstock_root/build_artifacts/jinja2_1741263328855/work\njsonpatch @ file:///home/conda/feedstock_root/build_artifacts/jsonpatch_1733814567314/work\njsonpointer @ file:///home/conda/feedstock_root/build_artifacts/jsonpointer_1725302941992/work\njsonschema @ file:///home/conda/feedstock_root/build_artifacts/jsonschema_1748294245630/work\njsonschema-specifications @ file:///tmp/tmpuvkyqc9y/src\nlibarchive-c @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_python-libarchive-c_1747927321/work\nlibmambapy @ file:///home/conda/feedstock_root/build_artifacts/mamba-split_1746515836725/work/libmambapy\nlief @ file:///home/conda/feedstock_root/build_artifacts/lief_1743551769507/work/api/python\nlintrunner==0.12.7\nMarkupSafe @ file:///home/conda/feedstock_root/build_artifacts/markupsafe_1733219680183/work\nmatplotlib-inline @ file:///home/conda/feedstock_root/build_artifacts/matplotlib-inline_1733416936468/work\nmenuinst @ file:///home/conda/feedstock_root/build_artifacts/menuinst_1731146975675/work\nmpmath==1.3.0\nmsgpack @ file:///home/conda/feedstock_root/build_artifacts/msgpack-python_1725974992554/work\nnetworkx==3.5\nninja==1.11.1.4\nnumpy==2.2.5\nnvidia-cublas-cu12==12.8.3.14\nnvidia-cuda-cupti-cu12==12.8.57\nnvidia-cuda-nvrtc-cu12==12.8.61\nnvidia-cuda-runtime-cu12==12.8.57\nnvidia-cudnn-cu12==9.7.1.26\nnvidia-cufft-cu12==11.3.3.41\nnvidia-cufile-cu12==1.13.0.11\nnvidia-curand-cu12==10.3.9.55\nnvidia-cusolver-cu12==11.7.2.55\nnvidia-cusparse-cu12==12.5.7.53\nnvidia-cusparselt-cu12==0.6.3\nnvidia-nccl-cu12==2.26.2\nnvidia-nvjitlink-cu12==12.8.61\nnvidia-nvtx-cu12==12.8.55\noptree==0.16.0\npackaging @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_packaging_1745345660/work\nparso @ file:///home/conda/feedstock_root/build_artifacts/parso_1733271261340/work\npexpect @ file:///home/conda/feedstock_root/build_artifacts/pexpect_1733301927746/work\npickleshare @ file:///home/conda/feedstock_root/build_artifacts/pickleshare_1733327343728/work\npillow==11.0.0\npip @ file:///home/conda/feedstock_root/build_artifacts/pip_1746249878903/work\npkginfo @ file:///home/conda/feedstock_root/build_artifacts/pkginfo_1739984581450/work\npkgutil_resolve_name @ file:///home/conda/feedstock_root/build_artifacts/pkgutil-resolve-name_1733344503739/work\nplatformdirs @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_platformdirs_1746710438/work\npluggy @ file:///home/conda/feedstock_root/build_artifacts/pluggy_1733222765875/work\nprompt_toolkit @ file:///home/conda/feedstock_root/build_artifacts/prompt-toolkit_1744724089886/work\nprotobuf==4.25.6\npsutil @ file:///home/conda/feedstock_root/build_artifacts/psutil_1740663149797/work\nptyprocess @ file:///home/conda/feedstock_root/build_artifacts/ptyprocess_1733302279685/work/dist/ptyprocess-0.7.0-py2.py3-none-any.whl#sha256=92c32ff62b5fd8cf325bec5ab90d7be3d2a8ca8c8a3813ff487a8d2002630d1f\npure_eval @ file:///home/conda/feedstock_root/build_artifacts/pure_eval_1733569405015/work\npycosat @ file:///home/conda/feedstock_root/build_artifacts/pycosat_1732588400443/work\npycparser @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_pycparser_1733195786/work\nPygments @ file:///home/conda/feedstock_root/build_artifacts/pygments_1736243443484/work\nPySocks @ file:///home/conda/feedstock_root/build_artifacts/pysocks_1733217236728/work\npython-etcd==0.4.5\npytz @ file:///home/conda/feedstock_root/build_artifacts/pytz_1742920838005/work\nPyYAML @ file:///home/conda/feedstock_root/build_artifacts/pyyaml_1737454647378/work\nreferencing @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_referencing_1737836872/work\nregex==2024.11.6\nrequests @ file:///home/conda/feedstock_root/build_artifacts/requests_1733217035951/work\nrpds-py @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_rpds-py_1747837968/work\nruamel.yaml @ file:///home/conda/feedstock_root/build_artifacts/ruamel.yaml_1748629995798/work\nruamel.yaml.clib @ file:///home/conda/feedstock_root/build_artifacts/ruamel.yaml.clib_1728724459810/work\nsafetensors==0.5.3\nsentencepiece==0.2.0\nsetuptools==75.8.2\nsix==1.17.0\nsortedcontainers==2.4.0\nsoupsieve @ file:///home/conda/feedstock_root/build_artifacts/soupsieve_1746563585861/work\nstack_data @ file:///home/conda/feedstock_root/build_artifacts/stack_data_1733569443808/work\nsympy==1.14.0\ntokenizers==0.21.1\ntorch==2.7.1+cu128\ntorchaudio==2.7.1+cu128\ntorchelastic==0.2.2\ntorchvision==0.22.1+cu128\ntqdm @ file:///home/conda/feedstock_root/build_artifacts/tqdm_1735661334605/work\ntraitlets @ file:///home/conda/feedstock_root/build_artifacts/traitlets_1733367359838/work\ntransformers==4.51.3\ntriton==3.3.1\ntruststore @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_truststore_1739009763/work\ntypes-dataclasses==0.6.6\ntyping_extensions==4.13.2\nurllib3 @ file:///home/conda/feedstock_root/build_artifacts/urllib3_1744323578849/work\nwcwidth @ file:///home/conda/feedstock_root/build_artifacts/wcwidth_1733231326287/work\nwheel==0.45.1\nzipp @ file:///home/conda/feedstock_root/build_artifacts/zipp_1748277385522/work\nzstandard==0.23.0\n",
+    "cuda": "12.8",
+    "gpu": "NVIDIA GeForce RTX 5060 Ti",
+    "gpu_arch": [
+      12,
+      0
+    ],
+    "torch_arch_list": [
+      "sm_75",
+      "sm_80",
+      "sm_86",
+      "sm_90",
+      "sm_100",
+      "sm_120",
+      "compute_120"
+    ],
+    "cuda_free_total_before_load": [
+      15894315008,
+      17102864384
+    ]
+  },
+  "model_selection": "model_approved_by_user_historical_candidate_revision_documented",
+  "checkpoint_files": [
+    {
+      "file": "config.json",
+      "bytes": 601,
+      "sha256": "affafc6478ec0fd07a32f0ca57aa2fc57743f4d17d6730f86a96ac24d1507f99"
+    },
+    {
+      "file": "generation_config.json",
+      "bytes": 116,
+      "sha256": "b4669f1b8f4185324bd9b12a69e85a1ad2289bc48111ef739cfaaea3bba6b0a9"
+    },
+    {
+      "file": "model-00001-of-00003.safetensors",
+      "bytes": 4949453792,
+      "sha256": "ce6fb6f6f4d0183f4813cbf4ece24109da629a08d4210da46f77e1d8b0bd5c19"
+    },
+    {
+      "file": "model-00002-of-00003.safetensors",
+      "bytes": 4999819336,
+      "sha256": "8c0e72f148366b6a3709e002a98706a33d31aec8515090c856c95b2044f92ae0"
+    },
+    {
+      "file": "model-00003-of-00003.safetensors",
+      "bytes": 4546807800,
+      "sha256": "905dd405363e43d95779c1c1155a2dbfd36155914ae95dbd934e12e490cfb4ca"
+    },
+    {
+      "file": "model.safetensors.index.json",
+      "bytes": 23950,
+      "sha256": "e489ba553b87cde188d921b1a8283c2e0b9d33d635b88147d96ff0fcd6250016"
+    },
+    {
+      "file": "params.json",
+      "bytes": 202,
+      "sha256": "8a64b8657de37af1f828eef1517dc186247938d66e7fea2c78c31d5b9071efe6"
+    },
+    {
+      "file": "special_tokens_map.json",
+      "bytes": 414,
+      "sha256": "6fa06efa2785e450051989a6f8fb4416b10149ded485ddd3f127a40734f5cfd0"
+    },
+    {
+      "file": "tokenizer.json",
+      "bytes": 1961548,
+      "sha256": "e553af6fff7d7ad76e830608b218c5c0b0822998d5a1a96099a74cd3c1cb1a49"
+    },
+    {
+      "file": "tokenizer.model",
+      "bytes": 587404,
+      "sha256": "37f00374dea48658ee8f5d0f21895b9bc55cb0103939607c8185bfd1c6ca1f89"
+    },
+    {
+      "file": "tokenizer_config.json",
+      "bytes": 140874,
+      "sha256": "0533dec9cfe319163801b6618d0f3ec9cfa126b6288e3df5deca6e32acb09cd2"
+    }
+  ],
+  "tokenizer_files": [
+    {
+      "file": "special_tokens_map.json",
+      "sha256": "6fa06efa2785e450051989a6f8fb4416b10149ded485ddd3f127a40734f5cfd0"
+    },
+    {
+      "file": "tokenizer.json",
+      "sha256": "e553af6fff7d7ad76e830608b218c5c0b0822998d5a1a96099a74cd3c1cb1a49"
+    },
+    {
+      "file": "tokenizer.model",
+      "sha256": "37f00374dea48658ee8f5d0f21895b9bc55cb0103939607c8185bfd1c6ca1f89"
+    },
+    {
+      "file": "tokenizer.model.v3",
+      "sha256": "37f00374dea48658ee8f5d0f21895b9bc55cb0103939607c8185bfd1c6ca1f89"
+    },
+    {
+      "file": "tokenizer_config.json",
+      "sha256": "0533dec9cfe319163801b6618d0f3ec9cfa126b6288e3df5deca6e32acb09cd2"
+    }
+  ],
+  "model_device_map": {
+    "model.embed_tokens": "0",
+    "model.layers.0": "0",
+    "model.layers.1": "0",
+    "model.layers.2": "0",
+    "model.layers.3": "0",
+    "model.layers.4": "0",
+    "model.layers.5": "0",
+    "model.layers.6": "0",
+    "model.layers.7": "0",
+    "model.layers.8": "0",
+    "model.layers.9": "0",
+    "model.layers.10": "0",
+    "model.layers.11": "0",
+    "model.layers.12": "0",
+    "model.layers.13": "0",
+    "model.layers.14": "0",
+    "model.layers.15": "0",
+    "model.layers.16": "0",
+    "model.layers.17": "0",
+    "model.layers.18": "0",
+    "model.layers.19": "0",
+    "model.layers.20": "0",
+    "model.layers.21": "0",
+    "model.layers.22": "0",
+    "model.layers.23": "0",
+    "model.layers.24": "0",
+    "model.layers.25": "0",
+    "model.layers.26": "0",
+    "model.layers.27": "0",
+    "model.layers.28": "0",
+    "model.layers.29": "0",
+    "model.layers.30": "cpu",
+    "model.layers.31": "cpu",
+    "model.norm": "cpu",
+    "model.rotary_emb": "cpu",
+    "lm_head": "cpu"
+  },
+  "load_seconds": 262.99193168199963,
+  "records_written": 9504,
+  "execution_errors": 0,
+  "elapsed_seconds": 10101.71108334,
+  "gpu_peak_allocated_bytes": 13673880576,
+  "gpu_peak_reserved_bytes": 13702791168,
+  "cpu_rss_at_end_bytes": 6656040960
+}
