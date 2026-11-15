@@ -124,11 +124,13 @@ def log_progress(output_root, message, *, dry_run=False, lock=None):
             _emit()
 
 
-def _build_job_command(manifest_path, cfg, match, output_root):
+def _build_job_command(manifest_path, cfg, match, output_root, *, max_new_tokens_cap=None):
     runner = ROOT / ('quantization/run.py' if cfg['model'].get('quantization') else 'run.py')
     cmd = [sys.executable, str(runner), '--manifest', str(manifest_path), '--output-root', str(output_root)]
     if match:
         cmd.extend(['--resume-from', str(match[0])])
+    if max_new_tokens_cap is not None:
+        cmd.extend(['--max-new-tokens-cap', str(int(max_new_tokens_cap))])
     return cmd
 
 
@@ -140,9 +142,9 @@ def _tail_text(path, lines=30):
         return ''
 
 
-def _execute_job(job, *, total, output_root, log_dir, stagger_s, stagger_state, stagger_lock, log_lock, stream_output):
+def _execute_job(job, *, total, output_root, log_dir, stagger_s, stagger_state, stagger_lock, log_lock, stream_output, max_new_tokens_cap=None):
     idx, manifest_path, cfg, match = job
-    cmd = _build_job_command(manifest_path, cfg, match, output_root)
+    cmd = _build_job_command(manifest_path, cfg, match, output_root, max_new_tokens_cap=max_new_tokens_cap)
     with stagger_lock:
         if stagger_state[0] and stagger_s > 0:
             time.sleep(stagger_s)
@@ -179,6 +181,7 @@ def main():
     parser.add_argument('--filter', help='Optional substring filter on manifest filename')
     parser.add_argument('--workers', type=int, help='Parallel workers for 8B runs (default: 3 for priority1/2, else 1; 70B always runs solo)')
     parser.add_argument('--stagger-seconds', type=float, default=2.5)
+    parser.add_argument('--max-new-tokens-cap', type=int, default=None, help='Optional cap on generation.max_new_tokens')
     parser.add_argument('--dry-run', action='store_true')
     args = parser.parse_args()
 
@@ -212,7 +215,7 @@ def main():
         for idx, manifest_path, cfg, match in pending:
             label = f'RESUME ({match[1]}): {manifest_path.name} -> {match[0].name}' if match else f'START: {manifest_path.name}'
             log_progress(output_root, f'[{idx}/{len(manifests)}] {label}', dry_run=True)
-            print('  DRY-RUN:', ' '.join(_build_job_command(manifest_path, cfg, match, output_root)), flush=True)
+            print('  DRY-RUN:', ' '.join(_build_job_command(manifest_path, cfg, match, output_root, max_new_tokens_cap=args.max_new_tokens_cap)), flush=True)
         return
 
     log_lock = threading.Lock()
@@ -228,6 +231,7 @@ def main():
             job, total=len(manifests), output_root=output_root, log_dir=log_dir,
             stagger_s=args.stagger_seconds, stagger_state=stagger_state,
             stagger_lock=stagger_lock, log_lock=log_lock, stream_output=True,
+            max_new_tokens_cap=args.max_new_tokens_cap,
         )
 
     if workers <= 1 or len(light_jobs) <= 1:
@@ -236,6 +240,7 @@ def main():
                 job, total=len(manifests), output_root=output_root, log_dir=log_dir,
                 stagger_s=args.stagger_seconds, stagger_state=stagger_state,
                 stagger_lock=stagger_lock, log_lock=log_lock, stream_output=True,
+                max_new_tokens_cap=args.max_new_tokens_cap,
             )
         return
 
@@ -246,6 +251,7 @@ def main():
                 _execute_job, job, total=len(manifests), output_root=output_root, log_dir=log_dir,
                 stagger_s=args.stagger_seconds, stagger_state=stagger_state,
                 stagger_lock=stagger_lock, log_lock=log_lock, stream_output=False,
+                max_new_tokens_cap=args.max_new_tokens_cap,
             )
             for job in light_jobs
         ]
