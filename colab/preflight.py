@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from colab.run_colab_grid import collect_manifests, load_json
+from colab.run_colab_grid import BLOCK_CHOICES, collect_manifests, load_json
 
 
 def load_exact_requirements(path):
@@ -87,14 +87,14 @@ def check_gpu(block):
         raise RuntimeError('CUDA is unavailable')
     properties = torch.cuda.get_device_properties(0)
     total_gib = properties.total_memory / (1024 ** 3)
-    if block in ('smoke', 'bloco_c', 'all') and total_gib < 76:
+    if block in ('smoke', 'bloco_c', 'priority1', 'all') and total_gib < 76:
         raise RuntimeError(f'{block} includes Llama 70B INT8 and requires at least 76 GiB VRAM; found {total_gib:.1f}')
     return {'name': properties.name, 'total_vram_gib': total_gib}
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--block', choices=['smoke', 'bloco_a', 'bloco_b', 'bloco_c', 'all'], default='smoke')
+    parser.add_argument('--block', choices=BLOCK_CHOICES, default='smoke')
     parser.add_argument('--requirements', default=str(ROOT / 'colab' / 'requirements.txt'))
     parser.add_argument('--report')
     args = parser.parse_args()

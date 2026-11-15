@@ -6,6 +6,7 @@ import tempfile
 import unittest
 
 from colab.preflight import load_exact_requirements, validate_installed_versions
+from colab.run_colab_grid import collect_manifests, is_heavy_70b, load_json, resolve_workers
 from analises.consolidar_multiseed import build_precision_flip_rows, validate_unique_seeds
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -196,6 +197,35 @@ class TestColabPlan(unittest.TestCase):
             self.assertIn('asb_zero_shot_type1', per_run)
             self.assertIn('asb_zero_shot_type2', per_run)
             self.assertEqual(float(per_run['unknown_zero_shot_rate']), 0.0)
+
+    def test_priority_blocks_and_worker_defaults(self):
+        p1 = collect_manifests('priority1')
+        self.assertEqual(len(p1), 39)
+        self.assertTrue(all(p.name.startswith('llama33_70b-') for p in p1[:9]))
+        self.assertTrue(all(is_heavy_70b(load_json(p)) for p in p1[:9]))
+        self.assertFalse(any(is_heavy_70b(load_json(p)) for p in p1[9:]))
+        self.assertEqual(sum(p.name.startswith('ministral3_8b-') for p in p1[9:]), 15)
+        self.assertEqual(sum(p.name.startswith('qwen3_8b-') for p in p1[9:]), 15)
+
+        p2 = collect_manifests('priority2')
+        self.assertEqual(len(p2), 30)
+        self.assertEqual(sum(p.name.startswith('gemma4_e4b-') for p in p2), 15)
+        self.assertEqual(sum(p.name.startswith('llama31_8b-') for p in p2), 15)
+        self.assertFalse(any('int8_48' in p.name for p in p2))
+
+        self.assertEqual(resolve_workers('priority1', None), 3)
+        self.assertEqual(resolve_workers('priority2', None), 3)
+        self.assertEqual(resolve_workers('bloco_a', None), 1)
+        self.assertEqual(resolve_workers('priority1', 2), 2)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            res = subprocess.run(
+                [sys.executable, str(ROOT / 'colab' / 'run_colab_grid.py'),
+                 '--block', 'priority1', '--output-root', tmp, '--dry-run'],
+                cwd=str(ROOT), capture_output=True, text=True, check=True,
+            )
+            self.assertIn('[1/39] START: llama33_70b-', res.stdout)
+            self.assertIn('[39/39] START: qwen3_8b-', res.stdout)
 
 
 if __name__ == '__main__':
