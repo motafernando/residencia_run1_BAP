@@ -23,6 +23,7 @@ from prepare import ROOT, digest, write_json
 from protocol import make_inputs, metrics
 from parser_v4 import parse_response
 from resume_journal import append_row, recover_journal, validate_resume
+from runtime_model import describe_model_device_map
 from quantization_config import validate_quantization, build_quantization, summarize_quantized_model
 
 
@@ -116,10 +117,18 @@ def main():
     inputs = [make_inputs(row, config['seed'], prompt_variant) for row in records]
     stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')
     output_root = Path(args.output_root).resolve() if args.output_root else (ROOT / config['output_root']).resolve()
-    source_files = ['prepare.py', 'protocol.py', 'parser_v3.py', 'parser_v4.py', 'resume_journal.py', 'run.py', 'quantization_config.py']
+    source_files = [
+        'prepare.py', 'protocol.py', 'parser_v3.py', 'parser_v4.py',
+        'resume_journal.py', 'runtime_model.py', 'run.py', 'quantization_config.py',
+    ]
     local_dir = Path(__file__).resolve().parent
     resolved_sources = {
-        name: (local_dir / name if name in ('run.py', 'quantization_config.py') and (local_dir / name).exists() else ROOT / name)
+        name: (
+            local_dir.parent / name if name == 'runtime_model.py'
+            else local_dir / name
+            if name in ('run.py', 'quantization_config.py') and (local_dir / name).exists()
+            else ROOT / name
+        )
         for name in source_files
     }
     current_code = {name: file_hash(path) for name, path in resolved_sources.items()}
@@ -234,7 +243,7 @@ def main():
         memory = {int(k) if k.isdigit() else k: v for k, v in m['max_memory'].items()}
         offload = out / 'offload'
         load_kwargs = dict(
-            torch_dtype=getattr(torch, m['dtype']),
+            dtype=getattr(torch, m['dtype']),
             device_map=m['device_map'],
             max_memory=memory,
             offload_folder=str(offload),
@@ -253,7 +262,7 @@ def main():
                 raise
             model = AutoModelForImageTextToText.from_pretrained(snapshot, **load_kwargs)
         model.eval()
-        state['model_device_map'] = {str(k): str(v) for k, v in model.hf_device_map.items()}
+        state['model_device_map'] = describe_model_device_map(model)
         state['quantization'] = summarize_quantized_model(model, bnb, m['quantization'])
         if previous_quantization and previous_quantization != state['quantization']:
             raise ValueError('Resume rejected: effective quantization or module layout changed')

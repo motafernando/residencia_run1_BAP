@@ -18,6 +18,7 @@ from prepare import ROOT, digest, write_json
 from protocol import make_inputs, metrics
 from parser_v4 import parse_response
 from resume_journal import append_row, recover_journal, validate_resume
+from runtime_model import describe_model_device_map
 
 
 def write_json(path, value):
@@ -110,8 +111,20 @@ def main():
     inputs = [make_inputs(row, config['seed'], prompt_variant) for row in records]
     stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')
     output_root = Path(args.output_root).resolve() if args.output_root else (ROOT / config['output_root']).resolve()
-    source_files = ['prepare.py', 'protocol.py', 'parser_v3.py', 'parser_v4.py', 'resume_journal.py', 'run.py']
-    current_code = {name: file_hash(ROOT / name) for name in source_files}
+    source_files = [
+        'prepare.py', 'protocol.py', 'parser_v3.py', 'parser_v4.py',
+        'resume_journal.py', 'runtime_model.py', 'run.py',
+    ]
+    local_dir = Path(__file__).resolve().parent
+    resolved_sources = {
+        name: (
+            local_dir / name
+            if name in ('runtime_model.py', 'run.py') and (local_dir / name).exists()
+            else ROOT / name
+        )
+        for name in source_files
+    }
+    current_code = {name: file_hash(path) for name, path in resolved_sources.items()}
     current_inputs = {name: file_hash(ROOT / config[name]) for name in ['sample', 'inventory']}
     if args.resume_from:
         if args.prepare_only:
@@ -126,8 +139,8 @@ def main():
     else:
         out = output_root / (stamp + ('-prepared' if args.prepare_only else '-inference'))
         out.mkdir(parents=True, exist_ok=False)
-        for name in source_files:
-            shutil.copyfile(ROOT / name, out / name.replace('.py', '.used.py'))
+        for name, src_path in resolved_sources.items():
+            shutil.copyfile(src_path, out / name.replace('.py', '.used.py'))
         write_json(out / 'config.json', config)
         write_json(out / 'sample.json', source)
         write_json(out / 'prompts.json', inputs)
@@ -220,7 +233,7 @@ def main():
         memory = {int(k) if k.isdigit() else k: v for k, v in m['max_memory'].items()}
         offload = out / 'offload'
         load_kwargs = dict(
-            torch_dtype=getattr(torch, m['dtype']),
+            dtype=getattr(torch, m['dtype']),
             device_map=m['device_map'],
             max_memory=memory,
             offload_folder=str(offload),
@@ -238,7 +251,7 @@ def main():
                 raise
             model = AutoModelForImageTextToText.from_pretrained(snapshot, **load_kwargs)
         model.eval()
-        state['model_device_map'] = {str(k): str(v) for k, v in model.hf_device_map.items()}
+        state['model_device_map'] = describe_model_device_map(model)
         if previous_device_map and previous_device_map != state['model_device_map']:
             raise ValueError('Resume rejected: model device map changed')
         state['load_seconds'] = time.perf_counter() - started

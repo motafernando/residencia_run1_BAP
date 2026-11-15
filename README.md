@@ -1,5 +1,8 @@
 # Reprodução e Extensão do WinoBias (Mistral 7B e Llama 3 8B)
 
+A rodada pós-Gate 9 no Google Colab está documentada em
+[`colab/README.md`](colab/README.md).
+
 Este diretório reúne o código, os manifestos de configuração, os dados preparados e as saídas brutas das rodadas locais do benchmark WinoBias baseadas em *Bias after Prompting* (Sivakumar et al., 2025) e estendidas com o grid de prompts inspirado em Gao e Kreiss (2025). Em cada rodada são avaliadas 3.168 frases nas condições intrínseca, zero-shot e 3-shot, totalizando 9.504 registros por rodada com a semente 2026.
 
 ## Organização

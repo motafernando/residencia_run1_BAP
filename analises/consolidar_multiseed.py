@@ -72,6 +72,30 @@ def precision_label(cfg):
     return f"quant/{cfg['generation']['max_new_tokens']}"
 
 
+def summarize_values(values):
+    if not values:
+        return {'mean': None, 'std': None, 'ci95_low': None, 'ci95_high': None}
+    mean = statistics.mean(values)
+    if len(values) == 1:
+        return {'mean': mean, 'std': 0.0, 'ci95_low': None, 'ci95_high': None}
+    std = statistics.stdev(values)
+    critical = {
+        1: 12.706, 2: 4.303, 3: 3.182, 4: 2.776, 5: 2.571,
+        6: 2.447, 7: 2.365, 8: 2.306, 9: 2.262, 10: 2.228,
+        11: 2.201, 12: 2.179, 13: 2.160, 14: 2.145, 15: 2.131,
+        16: 2.120, 17: 2.110, 18: 2.101, 19: 2.093, 20: 2.086,
+        21: 2.080, 22: 2.074, 23: 2.069, 24: 2.064, 25: 2.060,
+        26: 2.056, 27: 2.052, 28: 2.048, 29: 2.045, 30: 2.042,
+    }.get(len(values) - 1, 1.96)
+    margin = critical * std / math.sqrt(len(values))
+    return {
+        'mean': mean,
+        'std': std,
+        'ci95_low': mean - margin,
+        'ci95_high': mean + margin,
+    }
+
+
 def reparse_rows(rows, registry=None):
     reparsed = []
     for r in rows:
@@ -104,23 +128,28 @@ def summarize_run(folder, occupations, registry=None):
             return None
         return sum(r.get('selection_prediction') == r['gold'] for r in t2) / len(t2)
 
-    def asb_mean(cond):
+    def asb_type(cond, kind):
         bias = m['conditions'][cond]['bias_by_type']
-        t1 = bias['1']['a_sb_40'] if bias['1']['a_sb_40'] is not None else bias['1']['mean_absolute_defined_subset']
-        t2 = bias['2']['a_sb_40'] if bias['2']['a_sb_40'] is not None else bias['2']['mean_absolute_defined_subset']
+        item = bias[str(kind)]
+        return item['a_sb_40'] if item['a_sb_40'] is not None else item['mean_absolute_defined_subset']
+
+    def asb_mean(cond):
+        t1 = asb_type(cond, 1)
+        t2 = asb_type(cond, 2)
         return (t1 + t2) / 2.0 if t1 is not None and t2 is not None else None
 
     def unk_null(cond):
         sub = [r for r in rows if r['condition'] == cond and r['status'] == 'ok']
         unk = sum(r.get('selection_prediction') == 'Unknown' for r in sub)
         nul = sum(r.get('selection_prediction') is None for r in sub)
-        return unk, nul
+        denominator = len(sub)
+        return unk, nul, unk / denominator if denominator else None, nul / denominator if denominator else None
 
     v_intr = osb_vector_combined(rows, 'intrinsic', occupations)
     v_0s = osb_vector_combined(rows, 'zero_shot', occupations)
     v_3s = osb_vector_combined(rows, 'three_shot', occupations)
-    unk_0, nul_0 = unk_null('zero_shot')
-    unk_3, nul_3 = unk_null('three_shot')
+    unk_0, nul_0, unk_rate_0, nul_rate_0 = unk_null('zero_shot')
+    unk_3, nul_3, unk_rate_3, nul_rate_3 = unk_null('three_shot')
 
     summary = {
         'run_dir': folder.name,
@@ -135,10 +164,20 @@ def summarize_run(folder, occupations, registry=None):
         'asb_intrinsic': asb_mean('intrinsic'),
         'asb_zero_shot': asb_mean('zero_shot'),
         'asb_three_shot': asb_mean('three_shot'),
+        'asb_intrinsic_type1': asb_type('intrinsic', 1),
+        'asb_intrinsic_type2': asb_type('intrinsic', 2),
+        'asb_zero_shot_type1': asb_type('zero_shot', 1),
+        'asb_zero_shot_type2': asb_type('zero_shot', 2),
+        'asb_three_shot_type1': asb_type('three_shot', 1),
+        'asb_three_shot_type2': asb_type('three_shot', 2),
         'unk_zero_shot': unk_0,
         'null_zero_shot': nul_0,
+        'unknown_zero_shot_rate': unk_rate_0,
+        'null_zero_shot_rate': nul_rate_0,
         'unk_three_shot': unk_3,
         'null_three_shot': nul_3,
+        'unknown_three_shot_rate': unk_rate_3,
+        'null_three_shot_rate': nul_rate_3,
         'rho_zero_shot': pearson(v_intr, v_0s),
         'rho_three_shot': pearson(v_intr, v_3s),
     }
@@ -154,6 +193,70 @@ def write_csv(path, rows, fieldnames):
             writer.writerow(row)
 
 
+def validate_unique_seeds(run_summaries):
+    seen = {}
+    for summary in run_summaries:
+        key = (
+            summary['repo_id'],
+            summary['precision'],
+            summary['prompt_variant'],
+            summary['seed'],
+        )
+        previous = seen.get(key)
+        if previous:
+            raise ValueError(
+                'duplicate completed seed for one experimental group: '
+                f"{previous} and {summary['run_dir']}"
+            )
+        seen[key] = summary['run_dir']
+
+
+def build_precision_flip_rows(grouped_rows):
+    by_model_prompt = defaultdict(dict)
+    for (repo_id, precision, prompt), seed_runs in grouped_rows.items():
+        by_model_prompt[(repo_id, prompt)][precision] = {
+            seed: rows for seed, rows in seed_runs
+        }
+
+    output = []
+    for (repo_id, prompt), by_precision in sorted(by_model_prompt.items()):
+        bf16 = next((name for name in by_precision if name.startswith(('bfloat16/', 'bf16/'))), None)
+        int8 = next((name for name in by_precision if name.startswith('int8/')), None)
+        if not bf16 or not int8:
+            continue
+        common_seeds = sorted(set(by_precision[bf16]) & set(by_precision[int8]))
+        for condition in ['intrinsic', 'zero_shot', 'three_shot']:
+            compared = 0
+            flipped = 0
+            for seed in common_seeds:
+                left = {
+                    row['id']: row.get('selection_prediction')
+                    for row in by_precision[bf16][seed]
+                    if row['condition'] == condition and row['status'] == 'ok'
+                }
+                right = {
+                    row['id']: row.get('selection_prediction')
+                    for row in by_precision[int8][seed]
+                    if row['condition'] == condition and row['status'] == 'ok'
+                }
+                for item_id in set(left) & set(right):
+                    compared += 1
+                    flipped += left[item_id] != right[item_id]
+            if compared:
+                output.append({
+                    'repo_id': repo_id,
+                    'prompt_variant': prompt,
+                    'precision_a': bf16,
+                    'precision_b': int8,
+                    'condition': condition,
+                    'n_common_seeds': len(common_seeds),
+                    'n_pairs': compared,
+                    'n_flipped': flipped,
+                    'flip_rate': flipped / compared,
+                })
+    return output
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--results-root', action='append', required=True, help='One or more results directories')
@@ -167,6 +270,7 @@ def main():
 
     run_summaries = []
     grouped_rows = defaultdict(list)  # (repo_id, precision, prompt_variant) -> [(seed, rows)]
+    skipped_smoke = 0
 
     for root_str in args.results_root:
         root_path = Path(root_str).resolve()
@@ -175,6 +279,10 @@ def main():
         for folder in sorted(root_path.iterdir()):
             if not folder.is_dir() or not (folder / 'responses.jsonl').exists():
                 continue
+            cfg = load_json(folder / 'config.json')
+            if Path(cfg.get('sample', '')).name == 'smoke24.json':
+                skipped_smoke += 1
+                continue
             summary, rows = summarize_run(folder, occupations, registry=registry)
             if summary is None:
                 continue
@@ -182,6 +290,7 @@ def main():
             key = (summary['repo_id'], summary['precision'], summary['prompt_variant'])
             grouped_rows[key].append((summary['seed'], rows))
 
+    validate_unique_seeds(run_summaries)
     out_dir = Path(args.output_dir).resolve()
     if run_summaries:
         write_csv(out_dir / 'runs_summary.csv', run_summaries, list(run_summaries[0].keys()))
@@ -192,6 +301,11 @@ def main():
     metric_cols = [
         'acc_intrinsic', 'acc_zero_shot', 'acc_three_shot',
         'asb_intrinsic', 'asb_zero_shot', 'asb_three_shot',
+        'asb_intrinsic_type1', 'asb_intrinsic_type2',
+        'asb_zero_shot_type1', 'asb_zero_shot_type2',
+        'asb_three_shot_type1', 'asb_three_shot_type2',
+        'unknown_zero_shot_rate', 'null_zero_shot_rate',
+        'unknown_three_shot_rate', 'null_three_shot_rate',
         'rho_zero_shot', 'rho_three_shot',
     ]
     by_group = defaultdict(list)
@@ -208,8 +322,8 @@ def main():
         }
         for col in metric_cols:
             vals = [x[col] for x in items if x[col] is not None]
-            agg[f'{col}_mean'] = statistics.mean(vals) if vals else None
-            agg[f'{col}_std'] = statistics.stdev(vals) if len(vals) >= 2 else 0.0 if len(vals) == 1 else None
+            for suffix, value in summarize_values(vals).items():
+                agg[f'{col}_{suffix}'] = value
         agg_rows.append(agg)
 
         # Item-level flip rate across seeds for this group
@@ -238,11 +352,20 @@ def main():
         write_csv(out_dir / 'multiseed_summary.csv', agg_rows, list(agg_rows[0].keys()))
     if flip_rows:
         write_csv(out_dir / 'flip_rates.csv', flip_rows, list(flip_rows[0].keys()))
+    precision_flip_rows = build_precision_flip_rows(grouped_rows)
+    if precision_flip_rows:
+        write_csv(
+            out_dir / 'precision_flip_rates.csv',
+            precision_flip_rows,
+            list(precision_flip_rows[0].keys()),
+        )
 
     print(json.dumps({
         'runs_processed': len(run_summaries),
         'groups': len(agg_rows),
         'flip_rows': len(flip_rows),
+        'precision_flip_rows': len(precision_flip_rows),
+        'smoke_runs_skipped': skipped_smoke,
         'output_dir': str(out_dir),
     }, indent=2))
 

@@ -7,6 +7,16 @@ import sys
 
 ROOT = Path(__file__).resolve().parent.parent
 MANIFEST_ROOT = ROOT / 'configs' / 'colab'
+SMOKE_ORDER = {
+    name: index for index, name in enumerate([
+        'qwen3_8b-refined-bf16_48-seed2026.json',
+        'llama31_8b-refined-bf16_48-seed2026.json',
+        'ministral3_8b-refined-bf16_48-seed2026.json',
+        'gemma4_e4b-refined-bf16_48-seed2026.json',
+        'llama31_8b-refined-int8_48-seed2026.json',
+        'llama33_70b-refined-int8_48-seed2026.json',
+    ])
+}
 
 
 def load_json(path):
@@ -50,7 +60,12 @@ def collect_manifests(block, name_filter=None):
         b_dir = MANIFEST_ROOT / b
         if not b_dir.exists():
             continue
-        for p in sorted(b_dir.glob('*.json')):
+        block_files = list(b_dir.glob('*.json'))
+        if b == 'smoke':
+            block_files.sort(key=lambda p: SMOKE_ORDER.get(p.name, len(SMOKE_ORDER)))
+        else:
+            block_files.sort()
+        for p in block_files:
             if name_filter and name_filter.lower() not in p.name.lower():
                 continue
             files.append(p)
@@ -80,6 +95,9 @@ def main():
         if match and match[1] == 'inference_finished_needs_manual_review':
             print(f'[{idx}/{len(manifests)}] SKIP (done): {manifest_path.name} -> {match[0].name}')
             continue
+
+        if match and match[1] == 'failed':
+            match = None
 
         runner = ROOT / ('quantization/run.py' if cfg['model'].get('quantization') else 'run.py')
         cmd = [sys.executable, str(runner), '--manifest', str(manifest_path), '--output-root', str(output_root)]

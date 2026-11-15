@@ -145,11 +145,12 @@ def main():
                        build_manifest('smoke', model_key, prompt, 2026, quantized=quant, smoke=True))
     counts['smoke'] = len(smoke_specs)
 
-    # Bloco A: Gate 9 baselines across 4 new seeds (2027-2030)
+    # Bloco A: five Colab-controlled seeds. Seed 2026 is rerun so all
+    # repetitions share the same software/hardware execution environment.
     a_count = 0
     for model_key in ['llama3_8b', 'mistral7b_v03']:
         for prompt in PROMPTS_MAIN:
-            for seed in SEEDS_4_NEW:
+            for seed in SEEDS_5:
                 write_manifest('bloco_a', f'{model_key}-{prompt}-bf16_48-seed{seed}.json',
                                build_manifest('bloco_a', model_key, prompt, seed, quantized=False))
                 a_count += 1
