@@ -19,6 +19,7 @@ from protocol import make_inputs, metrics
 from parser_v4 import parse_response
 from resume_journal import append_row, recover_journal, validate_resume
 from runtime_model import (
+    cached_file_hash,
     describe_model_device_map,
     ensure_chat_template,
     prepare_generation_config,
@@ -220,10 +221,10 @@ def main():
         ensure_chat_template(tokenizer, token_snapshot)
         if config['format']['prompting'] == 'tokenizer_chat_template' and not tokenizer.chat_template:
             raise ValueError('Selected tokenizer has no chat template; explicitly select raw_completion if appropriate')
-        state['checkpoint_files'] = [{'file': p.name, 'bytes': p.stat().st_size, 'sha256': file_hash(p)}
+        state['checkpoint_files'] = [{'file': p.name, 'bytes': p.stat().st_size, 'sha256': cached_file_hash(p, file_hash)}
                                      for p in sorted(Path(snapshot).iterdir()) if p.is_file()
                                      and p.suffix in {'.safetensors', '.json', '.model', '.jinja'}]
-        state['tokenizer_files'] = [{'file': p.name, 'sha256': file_hash(p)}
+        state['tokenizer_files'] = [{'file': p.name, 'sha256': cached_file_hash(p, file_hash)}
                                     for p in sorted(Path(token_snapshot).iterdir()) if p.is_file()
                                     and ('token' in p.name or p.suffix in {'.model', '.jinja'})]
         if previous_checkpoint and previous_checkpoint != state['checkpoint_files']:

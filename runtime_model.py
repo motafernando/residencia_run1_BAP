@@ -1,6 +1,11 @@
 """Small runtime helpers shared by quantized and unquantized runners."""
 import copy
+import hashlib
+import json
+import os
 from pathlib import Path
+import re
+import tempfile
 
 
 def describe_model_device_map(model):
@@ -43,3 +48,49 @@ def prepare_generation_config(base_generation_config, settings, tokenizer):
             if hasattr(generation, flag):
                 setattr(generation, flag, None)
     return generation
+
+
+def _sha256_file(path):
+    value = hashlib.sha256()
+    with Path(path).open('rb') as handle:
+        for block in iter(lambda: handle.read(8 * 1024 * 1024), b''):
+            value.update(block)
+    return value.hexdigest()
+
+
+def cached_file_hash(path, raw_hash_fn=None, cache_path=None):
+    """Return SHA-256 hex digest using HF blob name or a stat-keyed cache."""
+    file_path = Path(path)
+    resolved = file_path.resolve()
+    if resolved.parent.name == 'blobs' and re.fullmatch(r'[0-9a-f]{64}', resolved.name):
+        return resolved.name
+
+    cache_file = (
+        Path(cache_path)
+        if cache_path is not None
+        else Path(tempfile.gettempdir()) / 'bap_sha256_cache.json'
+    )
+    stat = resolved.stat()
+    cache_key = f'{resolved}:{stat.st_size}:{stat.st_mtime_ns}'
+    cache = {}
+    if cache_file.exists():
+        try:
+            loaded = json.loads(cache_file.read_text(encoding='utf-8'))
+            if isinstance(loaded, dict):
+                cache = loaded
+        except Exception:
+            cache = {}
+
+    if cache_key in cache:
+        return cache[cache_key]
+
+    digest = (raw_hash_fn or _sha256_file)(file_path)
+    cache[cache_key] = digest
+    try:
+        cache_file.parent.mkdir(parents=True, exist_ok=True)
+        tmp = cache_file.with_name(f'{cache_file.name}.{os.getpid()}.tmp')
+        tmp.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding='utf-8')
+        os.replace(tmp, cache_file)
+    except OSError:
+        pass
+    return digest

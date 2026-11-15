@@ -2,8 +2,10 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 from runtime_model import (
+    cached_file_hash,
     describe_model_device_map,
     ensure_chat_template,
     prepare_generation_config,
@@ -124,6 +126,48 @@ class TestDescribeModelDeviceMap(unittest.TestCase):
         )
         self.assertEqual(summary['mode'], 'int8')
         self.assertEqual(summary['module_count'], 1)
+
+    def test_cached_file_hash_uses_hf_blob_name_without_reading(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            blobs = root / 'blobs'
+            snap = root / 'snapshots' / 'abc'
+            blobs.mkdir(parents=True)
+            snap.mkdir(parents=True)
+            sha = 'a' * 64
+            blob_file = blobs / sha
+            blob_file.write_bytes(b'payload')
+            link_path = snap / 'model-00001.safetensors'
+
+            def fail_if_read(_):
+                raise AssertionError('Should not hash LFS blob content')
+
+            self.assertEqual(cached_file_hash(blob_file, raw_hash_fn=fail_if_read), sha)
+
+            try:
+                link_path.symlink_to(blob_file)
+                self.assertEqual(cached_file_hash(link_path, raw_hash_fn=fail_if_read), sha)
+            except OSError:
+                with mock.patch.object(Path, 'resolve', return_value=blob_file):
+                    self.assertEqual(cached_file_hash(link_path, raw_hash_fn=fail_if_read), sha)
+
+    def test_cached_file_hash_caches_regular_files_by_stat(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            target = root / 'config.json'
+            target.write_text('{"ok": true}', encoding='utf-8')
+            cache_file = root / 'sha_cache.json'
+            calls = []
+
+            def counting_hash(path):
+                calls.append(Path(path).name)
+                return 'b' * 64
+
+            first = cached_file_hash(target, raw_hash_fn=counting_hash, cache_path=cache_file)
+            second = cached_file_hash(target, raw_hash_fn=counting_hash, cache_path=cache_file)
+            self.assertEqual(first, 'b' * 64)
+            self.assertEqual(second, 'b' * 64)
+            self.assertEqual(len(calls), 1)
 
 
 if __name__ == '__main__':

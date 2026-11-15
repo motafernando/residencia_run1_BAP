@@ -1,9 +1,11 @@
 """Resume-aware Colab grid runner for post-Gate 9 manifests."""
 import argparse
+from datetime import datetime, timezone
 import json
 from pathlib import Path
 import subprocess
 import sys
+import time
 
 ROOT = Path(__file__).resolve().parent.parent
 MANIFEST_ROOT = ROOT / 'configs' / 'colab'
@@ -72,6 +74,17 @@ def collect_manifests(block, name_filter=None):
     return files
 
 
+def log_progress(output_root, message, *, dry_run=False):
+    print(message, flush=True)
+    if dry_run:
+        return
+    stamp = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+    log_path = Path(output_root) / 'grid_progress.log'
+    with log_path.open('a', encoding='utf-8') as handle:
+        handle.write(f'{stamp} {message}\n')
+        handle.flush()
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--block', choices=['smoke', 'bloco_a', 'bloco_b', 'bloco_c', 'all'], required=True)
@@ -93,7 +106,11 @@ def main():
         ident = run_identity(cfg)
         match = existing.get(ident)
         if match and match[1] == 'inference_finished_needs_manual_review':
-            print(f'[{idx}/{len(manifests)}] SKIP (done): {manifest_path.name} -> {match[0].name}')
+            log_progress(
+                output_root,
+                f'[{idx}/{len(manifests)}] SKIP (done): {manifest_path.name} -> {match[0].name}',
+                dry_run=args.dry_run,
+            )
             continue
 
         if match and match[1] == 'failed':
@@ -102,16 +119,31 @@ def main():
         runner = ROOT / ('quantization/run.py' if cfg['model'].get('quantization') else 'run.py')
         cmd = [sys.executable, str(runner), '--manifest', str(manifest_path), '--output-root', str(output_root)]
         if match:
-            print(f'[{idx}/{len(manifests)}] RESUME ({match[1]}): {manifest_path.name} -> {match[0].name}')
+            log_progress(
+                output_root,
+                f'[{idx}/{len(manifests)}] RESUME ({match[1]}): {manifest_path.name} -> {match[0].name}',
+                dry_run=args.dry_run,
+            )
             cmd.extend(['--resume-from', str(match[0])])
         else:
-            print(f'[{idx}/{len(manifests)}] START: {manifest_path.name}')
+            log_progress(
+                output_root,
+                f'[{idx}/{len(manifests)}] START: {manifest_path.name}',
+                dry_run=args.dry_run,
+            )
 
         if args.dry_run:
-            print('  DRY-RUN:', ' '.join(cmd))
+            print('  DRY-RUN:', ' '.join(cmd), flush=True)
             continue
 
+        tick = time.perf_counter()
         subprocess.run(cmd, cwd=str(ROOT), check=True)
+        elapsed_s = time.perf_counter() - tick
+        log_progress(
+            output_root,
+            f'[{idx}/{len(manifests)}] DONE ({elapsed_s:.1f}s): {manifest_path.name}',
+            dry_run=args.dry_run,
+        )
         existing = find_existing_runs(output_root)
 
 
