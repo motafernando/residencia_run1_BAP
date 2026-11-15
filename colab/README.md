@@ -26,7 +26,7 @@ O secret `HF_TOKEN` precisa pertencer à mesma conta aprovada nas páginas:
 - <https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct>
 - <https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct>
 - <https://huggingface.co/google/gemma-4-E4B-it>
-- <https://huggingface.co/mistralai/Ministral-3-8B-Instruct-2512>
+- <https://huggingface.co/mistralai/Ministral-3-8B-Instruct-2512-BF16>
 - <https://huggingface.co/Qwen/Qwen3-8B>
 
 O token nunca é impresso nem salvo nos artefatos.

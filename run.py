@@ -18,7 +18,11 @@ from prepare import ROOT, digest, write_json
 from protocol import make_inputs, metrics
 from parser_v4 import parse_response
 from resume_journal import append_row, recover_journal, validate_resume
-from runtime_model import describe_model_device_map
+from runtime_model import (
+    describe_model_device_map,
+    ensure_chat_template,
+    prepare_generation_config,
+)
 
 
 def write_json(path, value):
@@ -79,13 +83,8 @@ def generate(model, tokenizer, text, config, torch):
     else:
         raise ValueError('Unknown prompt format')
     inputs = inputs.to(model.get_input_embeddings().weight.device)
-    settings = dict(config['generation'])
-    settings['pad_token_id'] = tokenizer.pad_token_id if tokenizer.pad_token_id is not None else tokenizer.eos_token_id
     # Preserve model-specific end-of-turn IDs; override only the smoke settings.
-    generation = copy.deepcopy(model.generation_config)
-    generation.update(**settings)
-    if generation.eos_token_id is None:
-        generation.eos_token_id = tokenizer.eos_token_id
+    generation = prepare_generation_config(model.generation_config, config['generation'], tokenizer)
     with torch.inference_mode():
         output = model.generate(**inputs, generation_config=generation)
     continuation = output[0, inputs['input_ids'].shape[-1]:].cpu().tolist()
@@ -218,6 +217,7 @@ def main():
                                            local_files_only=m['local_files_only'], allow_patterns=patterns)
         state['resolved_revisions'] = {'model': Path(snapshot).name, 'tokenizer': Path(token_snapshot).name}
         tokenizer = AutoTokenizer.from_pretrained(token_snapshot, local_files_only=True, trust_remote_code=False)
+        ensure_chat_template(tokenizer, token_snapshot)
         if config['format']['prompting'] == 'tokenizer_chat_template' and not tokenizer.chat_template:
             raise ValueError('Selected tokenizer has no chat template; explicitly select raw_completion if appropriate')
         state['checkpoint_files'] = [{'file': p.name, 'bytes': p.stat().st_size, 'sha256': file_hash(p)}

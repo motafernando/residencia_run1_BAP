@@ -93,6 +93,13 @@ class TestColabPlan(unittest.TestCase):
         seed_2026 = [path for path in manifests if 'seed2026' in path.name]
         self.assertEqual(len(seed_2026), 6)
 
+    def test_ministral3_uses_bf16_repo(self):
+        smoke = json.loads(
+            (ROOT / 'configs' / 'colab' / 'smoke' / 'ministral3_8b-refined-bf16_48-seed2026.json')
+            .read_text(encoding='utf-8')
+        )
+        self.assertEqual(smoke['model']['repo_id'], 'mistralai/Ministral-3-8B-Instruct-2512-BF16')
+
     def test_failed_run_without_responses_starts_cleanly(self):
         with tempfile.TemporaryDirectory() as tmp:
             tmp_path = Path(tmp)

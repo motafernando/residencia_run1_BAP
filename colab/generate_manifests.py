@@ -16,6 +16,7 @@ ALLOWED_REPOS = [
     'meta-llama/Meta-Llama-3-8B-Instruct',
     'mistralai/Mistral-7B-Instruct-v0.3',
     'meta-llama/Llama-3.1-8B-Instruct',
+    'mistralai/Ministral-3-8B-Instruct-2512-BF16',
     'mistralai/Ministral-3-8B-Instruct-2512',
     'Qwen/Qwen3-8B',
     'google/gemma-4-E4B-it',
@@ -45,7 +46,7 @@ MODELS = {
         'selection_status': 'same_family_latest_weights',
     },
     'ministral3_8b': {
-        'repo_id': 'mistralai/Ministral-3-8B-Instruct-2512',
+        'repo_id': 'mistralai/Ministral-3-8B-Instruct-2512-BF16',
         'revision': 'main',
         'tokenizer_revision': 'main',
         'allow_unpinned_revision': True,

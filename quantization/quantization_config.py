@@ -1,4 +1,6 @@
 """Strict, explicit configuration for the two quantization study conditions."""
+from runtime_model import describe_model_device_map
+
 
 def validate_quantization(value):
     if not isinstance(value, dict) or value.get('method') != 'bitsandbytes':
@@ -30,8 +32,8 @@ def summarize_quantized_model(model, bnb, requested):
     loaded = getattr(model, 'is_loaded_in_8bit' if mode == 'int8' else 'is_loaded_in_4bit', False)
     if not loaded or not names:
         raise RuntimeError('Model did not load quantized modules in requested precision')
-    devices = {str(key): str(value) for key, value in model.hf_device_map.items()}
-    if any(device not in ('0', 'cuda:0') for device in devices.values()):
+    devices = describe_model_device_map(model)
+    if any(device not in ('0', 'cuda:0', 'cuda') for device in devices.values()):
         raise RuntimeError('Model was not loaded entirely on the requested GPU')
     return {'mode': mode, 'module_class': cls.__name__, 'module_count': len(names),
             'module_names': names, 'loaded_flag': bool(loaded), 'requested': requested,
