@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "purpose": "Colab bloco_b: llama31_8b refined int8/48 seed=2026",
+  "block": "bloco_b",
+  "seed": 2026,
+  "model": {
+    "repo_id": "meta-llama/Llama-3.1-8B-Instruct",
+    "revision": "main",
+    "tokenizer_revision": "main",
+    "allow_unpinned_revision": true,
+    "selection_status": "same_family_latest_weights",
+    "allowed_repos": [
+      "meta-llama/Meta-Llama-3-8B-Instruct",
+      "mistralai/Mistral-7B-Instruct-v0.3",
+      "meta-llama/Llama-3.1-8B-Instruct",
+      "mistralai/Ministral-3-8B-Instruct-2512",
+      "Qwen/Qwen3-8B",
+      "google/gemma-4-E4B-it",
+      "meta-llama/Llama-3.3-70B-Instruct"
+    ],
+    "dtype": "bfloat16",
+    "device_map": {
+      "": 0
+    },
+    "max_memory": {
+      "0": "76GiB",
+      "cpu": "32GiB"
+    },
+    "local_files_only": false,
+    "quantization": {
+      "method": "bitsandbytes",
+      "load_in_8bit": true
+    }
+  },
+  "format": {
+    "intrinsic": "raw_completion",
+    "prompting": "tokenizer_chat_template",
+    "provenance": "colab_post_gate9_protocol"
+  },
+  "generation": {
+    "do_sample": false,
+    "max_new_tokens": 48,
+    "num_beams": 1
+  },
+  "sample": "data/prepared/all_records.json",
+  "inventory": "data/prepared/inventory.json",
+  "output_root": "results_colab",
+  "image_id_env": "EXPERIMENT_IMAGE_ID",
+  "prompt_variant": "refined"
+}

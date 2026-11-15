@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "purpose": "Colab bloco_a: mistral7b_v03 original bf16/48 seed=2029",
+  "block": "bloco_a",
+  "seed": 2029,
+  "model": {
+    "repo_id": "mistralai/Mistral-7B-Instruct-v0.3",
+    "revision": "0d4b76e1efeb5eb6f6b5e757c79870472e04bd3a",
+    "tokenizer_revision": "0d4b76e1efeb5eb6f6b5e757c79870472e04bd3a",
+    "allow_unpinned_revision": false,
+    "selection_status": "gate9_baseline_multiseed",
+    "allowed_repos": [
+      "meta-llama/Meta-Llama-3-8B-Instruct",
+      "mistralai/Mistral-7B-Instruct-v0.3",
+      "meta-llama/Llama-3.1-8B-Instruct",
+      "mistralai/Ministral-3-8B-Instruct-2512",
+      "Qwen/Qwen3-8B",
+      "google/gemma-4-E4B-it",
+      "meta-llama/Llama-3.3-70B-Instruct"
+    ],
+    "dtype": "bfloat16",
+    "device_map": "auto",
+    "max_memory": {
+      "0": "76GiB",
+      "cpu": "32GiB"
+    },
+    "local_files_only": false,
+    "quantization": null
+  },
+  "format": {
+    "intrinsic": "raw_completion",
+    "prompting": "tokenizer_chat_template",
+    "provenance": "colab_post_gate9_protocol"
+  },
+  "generation": {
+    "do_sample": false,
+    "max_new_tokens": 48,
+    "num_beams": 1
+  },
+  "sample": "data/prepared/all_records.json",
+  "inventory": "data/prepared/inventory.json",
+  "output_root": "results_colab",
+  "image_id_env": "EXPERIMENT_IMAGE_ID",
+  "prompt_variant": "original"
+}

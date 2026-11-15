@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "purpose": "Colab bloco_a: llama3_8b evaluation_gender_bias bf16/48 seed=2027",
+  "block": "bloco_a",
+  "seed": 2027,
+  "model": {
+    "repo_id": "meta-llama/Meta-Llama-3-8B-Instruct",
+    "revision": "8afb486c1db24fe5011ec46dfbe5b5dccdb575c2",
+    "tokenizer_revision": "8afb486c1db24fe5011ec46dfbe5b5dccdb575c2",
+    "allow_unpinned_revision": false,
+    "selection_status": "gate9_baseline_multiseed",
+    "allowed_repos": [
+      "meta-llama/Meta-Llama-3-8B-Instruct",
+      "mistralai/Mistral-7B-Instruct-v0.3",
+      "meta-llama/Llama-3.1-8B-Instruct",
+      "mistralai/Ministral-3-8B-Instruct-2512",
+      "Qwen/Qwen3-8B",
+      "google/gemma-4-E4B-it",
+      "meta-llama/Llama-3.3-70B-Instruct"
+    ],
+    "dtype": "bfloat16",
+    "device_map": "auto",
+    "max_memory": {
+      "0": "76GiB",
+      "cpu": "32GiB"
+    },
+    "local_files_only": false,
+    "quantization": null
+  },
+  "format": {
+    "intrinsic": "raw_completion",
+    "prompting": "tokenizer_chat_template",
+    "provenance": "colab_post_gate9_protocol"
+  },
+  "generation": {
+    "do_sample": false,
+    "max_new_tokens": 48,
+    "num_beams": 1
+  },
+  "sample": "data/prepared/all_records.json",
+  "inventory": "data/prepared/inventory.json",
+  "output_root": "results_colab",
+  "image_id_env": "EXPERIMENT_IMAGE_ID",
+  "prompt_variant": "evaluation_gender_bias"
+}

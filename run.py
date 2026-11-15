@@ -67,8 +67,10 @@ def score_candidate(model, tokenizer, prefix, candidate, torch):
 
 def generate(model, tokenizer, text, config, torch):
     if config['format']['prompting'] == 'tokenizer_chat_template':
+        template_kwargs = dict(config['format'].get('chat_template_kwargs') or {})
         rendered = tokenizer.apply_chat_template([{'role': 'user', 'content': text}],
-                                                  tokenize=False, add_generation_prompt=True)
+                                                  tokenize=False, add_generation_prompt=True,
+                                                  **template_kwargs)
         inputs = tokenizer(rendered, add_special_tokens=False, return_tensors='pt')
     elif config['format']['prompting'] == 'raw_completion':
         rendered = text
@@ -98,6 +100,7 @@ def main():
     parser.add_argument('--manifest', default=str(ROOT / 'configs' / 'smoke.json'))
     parser.add_argument('--prepare-only', action='store_true')
     parser.add_argument('--resume-from', help='Existing inference folder under this manifest output_root')
+    parser.add_argument('--output-root', help='Override manifest output_root (e.g. Google Drive path)')
     args = parser.parse_args()
     config = load(args.manifest)
     source = load(ROOT / config['sample'])
@@ -106,7 +109,7 @@ def main():
     prompt_variant = config.get('prompt_variant', 'original')
     inputs = [make_inputs(row, config['seed'], prompt_variant) for row in records]
     stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')
-    output_root = (ROOT / config['output_root']).resolve()
+    output_root = Path(args.output_root).resolve() if args.output_root else (ROOT / config['output_root']).resolve()
     source_files = ['prepare.py', 'protocol.py', 'parser_v3.py', 'parser_v4.py', 'resume_journal.py', 'run.py']
     current_code = {name: file_hash(ROOT / name) for name in source_files}
     current_inputs = {name: file_hash(ROOT / config[name]) for name in ['sample', 'inventory']}
@@ -141,13 +144,19 @@ def main():
         write_json(out / 'run.json', state)
         print(json.dumps({'status': state['status'], 'output': str(out), 'prompts': len(inputs) * 3}))
         return
-    import fcntl
-    lock = (out / '.inference.lock').open('a+')
+    lock = None
     try:
+        import fcntl
+        lock = (out / '.inference.lock').open('a+')
         fcntl.flock(lock.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
     except BlockingIOError as exc:
-        lock.close()
+        if lock is not None:
+            lock.close()
         raise RuntimeError('Another inference process owns this run') from exc
+    except (ImportError, OSError):
+        if lock is not None:
+            lock.close()
+            lock = None
     write_json(out / 'run.json', state)
     started = time.perf_counter()
     try:
@@ -162,12 +171,14 @@ def main():
         m = config['model']
         if m['repo_id'] not in m['allowed_repos']:
             raise ValueError('Choose one of the official study checkpoint candidates before inference')
-        for field in ['revision', 'tokenizer_revision']:
-            if not re.fullmatch(r'[0-9a-f]{40}', m[field] or ''):
-                raise ValueError(f'model.{field} must be a reviewed, complete 40-character commit SHA')
+        if not m.get('allow_unpinned_revision'):
+            for field in ['revision', 'tokenizer_revision']:
+                if not re.fullmatch(r'[0-9a-f]{40}', m[field] or ''):
+                    raise ValueError(f'model.{field} must be a reviewed, complete 40-character commit SHA')
         if m.get('quantization') is not None:
             raise ValueError('Quantization is outside this unquantized smoke profile')
         import torch
+        import transformers
         from transformers import AutoTokenizer, AutoModelForCausalLM
         from huggingface_hub import snapshot_download
         state['environment']['packages'] = {p: importlib.metadata.version(p) for p in
@@ -192,6 +203,7 @@ def main():
                                      local_files_only=m['local_files_only'], allow_patterns=patterns)
         token_snapshot = snapshot_download(repo_id=m['repo_id'], revision=m['tokenizer_revision'],
                                            local_files_only=m['local_files_only'], allow_patterns=patterns)
+        state['resolved_revisions'] = {'model': Path(snapshot).name, 'tokenizer': Path(token_snapshot).name}
         tokenizer = AutoTokenizer.from_pretrained(token_snapshot, local_files_only=True, trust_remote_code=False)
         if config['format']['prompting'] == 'tokenizer_chat_template' and not tokenizer.chat_template:
             raise ValueError('Selected tokenizer has no chat template; explicitly select raw_completion if appropriate')
@@ -207,11 +219,24 @@ def main():
             raise ValueError('Resume rejected: tokenizer files changed')
         memory = {int(k) if k.isdigit() else k: v for k, v in m['max_memory'].items()}
         offload = out / 'offload'
-        model = AutoModelForCausalLM.from_pretrained(snapshot, torch_dtype=getattr(torch, m['dtype']),
-                                                    device_map=m['device_map'], max_memory=memory,
-                                                    offload_folder=str(offload), low_cpu_mem_usage=True,
-                                                    local_files_only=True, trust_remote_code=False,
-                                                    use_safetensors=True, attn_implementation='eager')
+        load_kwargs = dict(
+            torch_dtype=getattr(torch, m['dtype']),
+            device_map=m['device_map'],
+            max_memory=memory,
+            offload_folder=str(offload),
+            low_cpu_mem_usage=True,
+            local_files_only=True,
+            trust_remote_code=False,
+            use_safetensors=True,
+            attn_implementation=m.get('attn_implementation', 'eager'),
+        )
+        try:
+            model = AutoModelForCausalLM.from_pretrained(snapshot, **load_kwargs)
+        except ValueError:
+            AutoModelForImageTextToText = getattr(transformers, 'AutoModelForImageTextToText', None)
+            if AutoModelForImageTextToText is None:
+                raise
+            model = AutoModelForImageTextToText.from_pretrained(snapshot, **load_kwargs)
         model.eval()
         state['model_device_map'] = {str(k): str(v) for k, v in model.hf_device_map.items()}
         if previous_device_map and previous_device_map != state['model_device_map']:
@@ -271,7 +296,8 @@ def main():
         (out / 'error.txt').write_text(traceback.format_exc(), encoding='utf-8')
         raise
     finally:
-        lock.close()
+        if lock is not None:
+            lock.close()
     print(json.dumps({'status': state['status'], 'output': str(out)}))
 
 
